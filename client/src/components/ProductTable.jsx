@@ -1,17 +1,17 @@
 import React from 'react';
-import { Button } from './ui/Button';
+import Button  from './ui/Button';
 
+// ProductTable Component
 const ProductTable = ({ products, onDeleteProduct }) => {
   const handleEdit = (id) => {
     console.log('Edit product:', id);
-   
   };
 
   return (
     <div className="bg-white shadow rounded-lg overflow-hidden">
       <div className="px-6 py-4 border-b flex justify-between items-center">
         <h3 className="text-lg font-medium text-gray-800">Recent Products</h3>
-        <button className="text-indigo-600 hover:text-indigo-800 text-sm font-medium">View All</button>
+        <button className="text-blue-600 hover:text-blue-800 text-sm font-medium">View All</button>
       </div>
       <div className="overflow-x-auto">
         <table className="min-w-full divide-y divide-gray-200">
@@ -52,7 +52,7 @@ const ProductTable = ({ products, onDeleteProduct }) => {
                     variant="ghost"
                     size="sm"
                     onClick={() => handleEdit(product.id)}
-                    className="text-indigo-600 hover:text-indigo-900"
+                    className="text-blue-600 hover:text-blue-900"
                   >
                     Edit
                   </Button>
@@ -78,5 +78,4 @@ const ProductTable = ({ products, onDeleteProduct }) => {
     </div>
   );
 };
-
 export default ProductTable;

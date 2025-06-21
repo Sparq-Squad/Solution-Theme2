@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
-import { Button } from './ui/Button';
-import { Input } from './ui/Input';
-import { Label } from './ui/Label';
-// import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-// import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import React, { useState, useRef } from 'react';
+import Button  from './ui/Button';
+import  Label  from './ui/Label';
+import  Input from './ui/Input';
 
+// AddProductForm Component
 const AddProductForm = ({ onAddProduct }) => {
   const [formData, setFormData] = useState({
     name: '',
@@ -14,7 +13,11 @@ const AddProductForm = ({ onAddProduct }) => {
     status: ''
   });
 
+  const [productImage, setProductImage] = useState(null);
+  const [imagePreview, setImagePreview] = useState('');
   const [errors, setErrors] = useState({});
+  
+  const imageInputRef = useRef(null);
 
   const validateForm = () => {
     const newErrors = {};
@@ -38,6 +41,21 @@ const AddProductForm = ({ onAddProduct }) => {
     
     if (!validateForm()) return;
 
+    let imageUrl = "https://via.placeholder.com/100";
+    
+    if (productImage) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        imageUrl = e.target.result;
+        createProduct(imageUrl);
+      };
+      reader.readAsDataURL(productImage);
+    } else {
+      createProduct(imageUrl);
+    }
+  };
+
+  const createProduct = (imageUrl) => {
     const newProduct = {
       id: Date.now().toString(),
       name: formData.name,
@@ -45,11 +63,14 @@ const AddProductForm = ({ onAddProduct }) => {
       platform: formData.platform,
       price: formData.price,
       status: formData.status,
-      image: "https://via.placeholder.com/100"
+      image: imageUrl
     };
 
     onAddProduct(newProduct);
-  
+    resetForm();
+  };
+
+  const resetForm = () => {
     setFormData({
       name: '',
       productId: '',
@@ -57,7 +78,13 @@ const AddProductForm = ({ onAddProduct }) => {
       price: '',
       status: ''
     });
+    setProductImage(null);
+    setImagePreview('');
     setErrors({});
+    
+    if (imageInputRef.current) {
+      imageInputRef.current.value = '';
+    }
   };
 
   const handleInputChange = (field, value) => {
@@ -67,13 +94,27 @@ const AddProductForm = ({ onAddProduct }) => {
     }
   };
 
+  const handleImageChange = (e) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setProductImage(file);
+      
+      // Create preview
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setImagePreview(e.target?.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   return (
-    <Card className="mb-8">
-      <CardHeader>
-        <CardTitle className="text-lg font-medium text-gray-800">Add New Product</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+    <div className="mb-8 bg-white rounded-lg shadow">
+      <div className="px-6 py-4 border-b">
+        <h2 className="text-lg font-medium text-gray-800">Add New Product</h2>
+      </div>
+      <div className="p-6">
+        <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           <div className="space-y-2">
             <Label htmlFor="name">Product Name</Label>
             <Input
@@ -102,18 +143,21 @@ const AddProductForm = ({ onAddProduct }) => {
 
           <div className="space-y-2">
             <Label htmlFor="platform">Platform</Label>
-            <Select value={formData.platform} onValueChange={(value) => handleInputChange('platform', value)}>
-              <SelectTrigger className={errors.platform ? 'border-red-500' : ''}>
-                <SelectValue placeholder="Select platform" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="Amazon">Amazon</SelectItem>
-                <SelectItem value="Flipkart">Flipkart</SelectItem>
-                <SelectItem value="Walmart">Walmart</SelectItem>
-                <SelectItem value="eBay">eBay</SelectItem>
-                <SelectItem value="Shopify">Shopify</SelectItem>
-              </SelectContent>
-            </Select>
+            <select
+              id="platform"
+              value={formData.platform}
+              onChange={(e) => handleInputChange('platform', e.target.value)}
+              className={`w-full h-10 rounded-md border ${
+                errors.platform ? 'border-red-500' : 'border-gray-300'
+              } bg-white px-3 py-2 text-base shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500`}
+            >
+              <option value="">Select platform</option>
+              <option value="Amazon">Amazon</option>
+              <option value="Flipkart">Flipkart</option>
+              <option value="Walmart">Walmart</option>
+              <option value="eBay">eBay</option>
+              <option value="Shopify">Shopify</option>
+            </select>
             {errors.platform && <p className="text-sm text-red-500">{errors.platform}</p>}
           </div>
 
@@ -133,27 +177,55 @@ const AddProductForm = ({ onAddProduct }) => {
 
           <div className="space-y-2">
             <Label htmlFor="status">Status</Label>
-            <Select value={formData.status} onValueChange={(value) => handleInputChange('status', value)}>
-              <SelectTrigger className={errors.status ? 'border-red-500' : ''}>
-                <SelectValue placeholder="Select status" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="Active">Active</SelectItem>
-                <SelectItem value="Inactive">Inactive</SelectItem>
-              </SelectContent>
-            </Select>
+            <select
+              id="status"
+              value={formData.status}
+              onChange={(e) => handleInputChange('status', e.target.value)}
+              className={`w-full h-10 rounded-md border ${
+                errors.status ? 'border-red-500' : 'border-gray-300'
+              } bg-white px-3 py-2 text-base shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500`}
+            >
+              <option value="">Select status</option>
+              <option value="Active">Active</option>
+              <option value="Inactive">Inactive</option>
+            </select>
             {errors.status && <p className="text-sm text-red-500">{errors.status}</p>}
           </div>
 
-          <div className="md:col-span-2 lg:col-span-5 flex justify-end">
+          <div className="space-y-2">
+            <Label htmlFor="image">Product Image</Label>
+            <input
+              id="image"
+              type="file"
+              accept="image/*"
+              ref={imageInputRef}
+              onChange={handleImageChange}
+              className="block w-full text-sm text-gray-500
+                file:mr-4 file:py-2 file:px-4
+                file:rounded file:border-0
+                file:text-sm file:font-semibold
+                file:bg-blue-50 file:text-blue-700
+                hover:file:bg-blue-100"
+            />
+            {imagePreview && (
+              <div className="mt-2">
+                <img 
+                  src={imagePreview} 
+                  alt="Preview" 
+                  className="w-20 h-20 object-cover rounded border"
+                />
+              </div>
+            )}
+          </div>
+
+          <div className="md:col-span-2 lg:col-span-3 flex justify-end">
             <Button type="submit" className="w-full md:w-auto">
               Add Product
             </Button>
           </div>
         </form>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 };
-
 export default AddProductForm;

@@ -1,225 +1,130 @@
-import React, { useState, useRef } from 'react';
-import { Button } from '../components/ui/Button';
-import { Label } from '../components/ui/Label';
-import { Input } from '../components/ui/Input';
-// import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-// import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useState } from 'react';
+import {
+      HomeIcon,
+    ChartBarIcon,
+    CogIcon,
+    UserGroupIcon,
+    QueueListIcon,
+    Bars3Icon,
+    XMarkIcon,
+} from '@heroicons/react/24/outline';
+import  Input  from '../components/ui/Input';
+import  Label  from '../components/ui/Label';
+import Button from '../components/ui/Button';
+import AddProductForm from '../components/AddProductform';
+import ProductTable from '../components/ProductTable';
 
-const AddProductForm = ({ onAddProduct }) => {
-  const [formData, setFormData] = useState({
-    name: '',
-    productId: '',
-    platform: '',
-    price: '',
-    status: ''
-  });
+const StatCard = ({ title, value, change }) => (
+  <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+    <h3 className="text-base font-medium text-gray-600">{title}</h3>
+    <div className="mt-2 flex items-baseline">
+      <p className="text-2xl font-semibold text-gray-900">{value}</p>
+      <span className="ml-2 text-sm font-medium text-green-600">{change}</span>
+    </div>
+  </div>
+);
 
-  const [productImage, setProductImage] = useState(null);
-  const [imagePreview, setImagePreview] = useState('');
-  const [errors, setErrors] = useState({});
-  
-  const imageInputRef = useRef(null);
+// Main Dashboard Component
+const Dashboard = () => {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [products, setProducts] = useState([]);
 
-  const toBase64 = (file) => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = error => reject(error);
-    });
+const navigation = [
+    { name: 'Dashboard', href: '#', icon: HomeIcon },
+    { name: 'Analytics', href: '#', icon: ChartBarIcon },
+    { name: 'Products', href: '#', icon: QueueListIcon },
+    { name: 'Audience', href: '#', icon: UserGroupIcon },
+    { name: 'Settings', href: '#', icon: CogIcon },
+];
+
+
+  const handleAddProduct = (newProduct) => {
+    setProducts(prev => [...prev, newProduct]);
   };
 
-  const validateForm = () => {
-    const newErrors = {};
-    
-    if (!formData.name.trim()) newErrors.name = 'Product name is required';
-    if (!formData.productId.trim()) newErrors.productId = 'Product ID is required';
-    if (!formData.platform) newErrors.platform = 'Platform is required';
-    if (!formData.price.trim()) newErrors.price = 'Price is required';
-    if (!formData.status) newErrors.status = 'Status is required';
-    
-    if (formData.price && isNaN(Number(formData.price))) {
-      newErrors.price = 'Price must be a valid number';
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    
-    if (!validateForm()) return;
-
-    try {
-      let imageUrl = "https://via.placeholder.com/100";
-      
-      if (productImage) {
-        imageUrl = await toBase64(productImage);
-      }
-
-      const newProduct = {
-        id: Date.now().toString(),
-        name: formData.name,
-        productId: formData.productId,
-        platform: formData.platform,
-        price: formData.price,
-        status: formData.status,
-        image: imageUrl
-      };
-
-      onAddProduct(newProduct);
-    
-      // Reset form
-      setFormData({
-        name: '',
-        productId: '',
-        platform: '',
-        price: '',
-        status: ''
-      });
-      setProductImage(null);
-      setImagePreview('');
-      setErrors({});
-      
-      if (imageInputRef.current) {
-        imageInputRef.current.value = '';
-      }
-    } catch (error) {
-      console.error("Error processing image:", error);
-      alert("Error adding product. Please try again.");
-    }
-  };
-
-  const handleInputChange = (field, value) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
-    if (errors[field]) {
-      setErrors(prev => ({ ...prev, [field]: '' }));
-    }
-  };
-
-  const handleImageChange = (e) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setProductImage(file);
-      
-      // Create preview
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setImagePreview(e.target?.result);
-      };
-      reader.readAsDataURL(file);
-    }
+  const handleDeleteProduct = (id) => {
+    setProducts(prev => prev.filter(product => product.id !== id));
   };
 
   return (
-    <Card className="mb-8">
-      <CardHeader>
-        <CardTitle className="text-lg font-medium text-gray-800">Add New Product</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          <div className="space-y-2">
-            <Label htmlFor="name">Product Name</Label>
-            <Input
-              id="name"
-              type="text"
-              value={formData.name}
-              onChange={(e) => handleInputChange('name', e.target.value)}
-              placeholder="Enter product name"
-              className={errors.name ? 'border-red-500' : ''}
-            />
-            {errors.name && <p className="text-sm text-red-500">{errors.name}</p>}
+    <div className="min-h-screen bg-gray-100">
+      {/* Mobile sidebar toggle */}
+      <button
+        onClick={() => setSidebarOpen(true)}
+        className="md:hidden fixed top-4 left-4 z-50 p-2 rounded-md text-gray-600 bg-white shadow-md"
+      >
+        <span className="h-6 w-6">☰</span>
+      </button>
+
+      {/* Sidebar */}
+      <div
+        className={`fixed inset-y-0 left-0 z-40 w-64 bg-white shadow-lg transform ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+          } md:translate-x-0 transition-transform duration-200 ease-in-out`}
+      >
+        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
+          <h1 className="text-xl font-bold text-blue-600">AI Business Analyst</h1>
+          <button onClick={() => setSidebarOpen(false)} className="md:hidden">
+            <span className="h-6 w-6 text-gray-500">✕</span>
+          </button>
+        </div>
+        <nav className="mt-6 px-4">
+          {navigation.map((item) => (
+           <a
+  key={item.name}
+  href={item.href}
+  className="flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600 mb-2 transition-all"
+>
+  <item.icon className="h-5 w-5" /> {/* Fixed: Render as component */}
+  <span>{item.name}</span>
+</a>
+          ))}
+        </nav>
+      </div>
+
+      {/* Overlay when mobile menu is open */}
+      {sidebarOpen && (
+        <div
+          onClick={() => setSidebarOpen(false)}
+          className="md:hidden fixed inset-0 z-30 bg-black bg-opacity-25"
+        ></div>
+      )}
+
+      {/* Main content */}
+      <div className="md:ml-64">
+        {/* Top Navbar */}
+        <header className="bg-white shadow-sm">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+            <h2 className="text-lg font-semibold text-gray-800">Dashboard</h2>
+            <div className="flex items-center space-x-4">
+              <button className="relative inline-block text-gray-600">
+                <span className="absolute top-0 right-0 h-2 w-2 rounded-full bg-red-500"></span>
+                <span className="h-6 w-6">🔔</span>
+              </button>
+              <img
+                src="https://i.pravatar.cc/150?img=63"
+                alt="User avatar"
+                className="w-8 h-8 rounded-full object-cover"
+              />
+            </div>
+          </div>
+        </header>
+
+        {/* Content */}
+        <main className="p-6 max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <StatCard title="Total Products" value="124" change="+12% this week" />
+            <StatCard title="Avg. Price" value="$28.99" change="-3% this week" />
+            <StatCard title="Inventory Score" value="87%" change="+5% this week" />
+            <StatCard title="Target Regions" value="14" change="+2 new regions" />
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="productId">Product ID</Label>
-            <Input
-              id="productId"
-              type="text"
-              value={formData.productId}
-              onChange={(e) => handleInputChange('productId', e.target.value)}
-              placeholder="Enter product ID"
-              className={errors.productId ? 'border-red-500' : ''}
-            />
-            {errors.productId && <p className="text-sm text-red-500">{errors.productId}</p>}
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="platform">Platform</Label>
-            <Select value={formData.platform} onValueChange={(value) => handleInputChange('platform', value)}>
-              <SelectTrigger className={errors.platform ? 'border-red-500' : ''}>
-                <SelectValue placeholder="Select platform" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="Amazon">Amazon</SelectItem>
-                <SelectItem value="Flipkart">Flipkart</SelectItem>
-                <SelectItem value="Walmart">Walmart</SelectItem>
-                <SelectItem value="eBay">eBay</SelectItem>
-                <SelectItem value="Shopify">Shopify</SelectItem>
-              </SelectContent>
-            </Select>
-            {errors.platform && <p className="text-sm text-red-500">{errors.platform}</p>}
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="price">Price</Label>
-            <Input
-              id="price"
-              type="number"
-              step="0.01"
-              value={formData.price}
-              onChange={(e) => handleInputChange('price', e.target.value)}
-              placeholder="Enter price"
-              className={errors.price ? 'border-red-500' : ''}
-            />
-            {errors.price && <p className="text-sm text-red-500">{errors.price}</p>}
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="status">Status</Label>
-            <Select value={formData.status} onValueChange={(value) => handleInputChange('status', value)}>
-              <SelectTrigger className={errors.status ? 'border-red-500' : ''}>
-                <SelectValue placeholder="Select status" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="Active">Active</SelectItem>
-                <SelectItem value="Inactive">Inactive</SelectItem>
-              </SelectContent>
-            </Select>
-            {errors.status && <p className="text-sm text-red-500">{errors.status}</p>}
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="image">Product Image</Label>
-            <Input
-              id="image"
-              type="file"
-              accept="image/*"
-              ref={imageInputRef}
-              onChange={handleImageChange}
-              className="file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
-            />
-            {imagePreview && (
-              <div className="mt-2">
-                <img 
-                  src={imagePreview} 
-                  alt="Preview" 
-                  className="w-20 h-20 object-cover rounded border"
-                />
-              </div>
-            )}
-          </div>
-
-          <div className="md:col-span-2 lg:col-span-3 flex justify-end">
-            <Button type="submit" className="w-full md:w-auto">
-              Add Product
-            </Button>
-          </div>
-        </form>
-      </CardContent>
-    </Card>
+          {/* Imported components */}
+          <AddProductForm onAddProduct={handleAddProduct} />
+          <ProductTable products={products} onDeleteProduct={handleDeleteProduct} />
+        </main>
+      </div>
+    </div>
   );
 };
 
-export default AddProductForm;
+export default Dashboard;
