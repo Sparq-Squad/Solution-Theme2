@@ -1,11 +1,17 @@
-function StatCard({ title, value, change }) {
-    return (
-        <div className="bg-white shadow rounded-lg p-5 hover:shadow-md transition-shadow">
-            <h3 className="text-sm text-gray-600">{title}</h3>
-            <p className="mt-2 text-2xl font-bold text-gray-800">{value}</p>
-            <p className="mt-1 text-xs text-green-500">{change}</p>
-        </div>
-    );
-}
+import React from 'react';
+
+const StatCard = ({ title, value, change }) => {
+  const isPositive = change.includes('+');
+  
+  return (
+    <div className="bg-white p-6 rounded-lg shadow-sm">
+      <h3 className="text-sm font-medium text-gray-500 mb-2">{title}</h3>
+      <div className="text-2xl font-bold text-gray-900 mb-1">{value}</div>
+      <p className={`text-sm ${isPositive ? 'text-green-600' : 'text-red-600'}`}>
+        {change}
+      </p>
+    </div>
+  );
+};
 
 export default StatCard;

@@ -4,4 +4,10 @@ import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
   plugins: [react(), tailwindcss()],
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+      '@/lib': path.resolve(__dirname, './src/lib') // Specific alias for lib
+    }
+  }
 });
