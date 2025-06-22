@@ -5,7 +5,7 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import RegisterPage from './pages/Register';
 import Dashboard from './pages/Dashboard';
-
+import ProtectedRoute from './components/ProtectedRoute';
 function App() {
 
   return (
@@ -32,7 +32,13 @@ function App() {
             <Footer />
           </>
         } />
-        <Route path='/dashboard' element={<Dashboard />} />
+        <Route path="/dashboard" element={
+                                          <ProtectedRoute>
+                                           <Dashboard />
+                                           </ProtectedRoute>
+                                                             }
+         />
+
       </Routes>
 
     </BrowserRouter>

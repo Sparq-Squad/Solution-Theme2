@@ -1,6 +1,47 @@
-import { Link } from 'react-router-dom';
+import axios from 'axios';
+import { use, useState } from 'react';
+import { useNavigate,Link } from 'react-router-dom';
+
 
 const LoginPage = () => {
+
+  const navigate = useNavigate();
+   const [form, setForm] = useState(
+    { email: '', password: '', rememberMe: false }
+    );
+
+
+const handleChange = (e) => {
+  const { name, value, type, checked } = e.target;
+  setForm((prev) => ({
+    ...prev,
+    [name]: type === 'checkbox' ? checked : value,
+  }));
+};
+
+
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  try {
+    const res = await axios.post('http://localhost:5000/user/login', {
+      email: form.email,
+      password: form.password,
+      rememberMe: form.rememberMe // Have to add this , not added till now 22-06
+    }, { withCredentials: true });
+   
+    if (form.rememberMe) {
+      localStorage.setItem('rememberMe', res.data.token);
+    }
+
+    alert(res.data.message);
+    navigate('/dashboard');
+  } catch (err) {
+    alert(err.response?.data?.error || 'Login failed');
+  }
+};
+
+
+
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4 sm:px-6 lg:px-8">
             <div className="max-w-md w-full space-y-8 p-8 bg-white rounded-xl shadow-lg transform transition-all duration-300 hover:shadow-xl">
@@ -15,7 +56,7 @@ const LoginPage = () => {
                     </p>
                 </div>
 
-                <form className="mt-8 space-y-6" action="#" method="POST">
+                <form onSubmit={handleSubmit} className="mt-8 space-y-6">
                     <div className="rounded-md shadow-sm space-y-4">
                         <div>
                             <label htmlFor="email-address" className="sr-only">
@@ -25,10 +66,12 @@ const LoginPage = () => {
                                 id="email-address"
                                 name="email"
                                 type="email"
+                                value={form.email}
                                 autoComplete="email"
                                 required
                                 className="appearance-none rounded-md relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm transition duration-200"
                                 placeholder="Email address"
+                                onChange={handleChange}
                             />
                         </div>
                         <div>
@@ -39,10 +82,12 @@ const LoginPage = () => {
                                 id="password"
                                 name="password"
                                 type="password"
+                                value={form.password}
                                 autoComplete="current-password"
                                 required
                                 className="appearance-none rounded-md relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm transition duration-200"
                                 placeholder="Password"
+                                onChange={handleChange}
                             />
                         </div>
                     </div>
@@ -51,8 +96,10 @@ const LoginPage = () => {
                         <div className="flex items-center">
                             <input
                                 id="remember-me"
-                                name="remember-me"
+                                name="rememberMe"
                                 type="checkbox"
+                                checked={form.rememberMe}
+                                onChange={handleChange}
                                 className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
                             />
                             <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">

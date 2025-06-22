@@ -1,10 +1,14 @@
 import { useState } from 'react';
+import {useNavigate} from 'react-router-dom';
+import axios from 'axios';
+
 import {
   HomeIcon,
   ChartBarIcon,
   CogIcon,
   UserGroupIcon,
   QueueListIcon,
+  ArrowRightOnRectangleIcon,
   Bars3Icon,
   XMarkIcon,
 } from '@heroicons/react/24/outline';
@@ -28,15 +32,32 @@ const StatCard = ({ title, value, change }) => (
 const Dashboard = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [products, setProducts] = useState([]);
-
+  const navigate = useNavigate();
   const navigation = [
     { name: 'Dashboard', href: '#', icon: HomeIcon },
     { name: 'Analytics', href: '#', icon: ChartBarIcon },
     { name: 'Products', href: '#', icon: QueueListIcon },
     { name: 'Audience', href: '#', icon: UserGroupIcon },
     { name: 'Settings', href: '#', icon: CogIcon },
+    { name: 'Logout', href: '/', icon: ArrowRightOnRectangleIcon },
   ];
 
+
+
+// very insecure cookie deletion ; don't do this from next time
+// try this logic in backend only
+const handleLogout = async () => {
+  try {
+    // Call the backend to clear the HttpOnly cookie securely
+    await axios.post('http://localhost:5000/user/logout', {}, {
+      withCredentials: true, // important: sends cookies
+    });
+    localStorage.removeItem('rememberMe');
+    navigate('/');
+  } catch (err) {
+    console.error('Logout Error:', err);
+  }
+};
 
   const handleAddProduct = (newProduct) => {
     setProducts(prev => [...prev, newProduct]);
@@ -68,7 +89,17 @@ const Dashboard = () => {
           </button>
         </div>
         <nav className="mt-6 px-4">
-          {navigation.map((item) => (
+          {navigation.map((item) => 
+          (  item.name === 'Logout' ? (
+        <button
+        key={item.name}
+        onClick={handleLogout}
+        className="flex w-full items-center space-x-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-600 mb-2 transition-all"
+      >
+        <item.icon className="h-5 w-5" />
+        <span>{item.name}</span>
+      </button>
+          ):(
             <a
               key={item.name}
               href={item.href}
@@ -77,7 +108,8 @@ const Dashboard = () => {
               <item.icon className="h-5 w-5" /> {/* Fixed: Render as component */}
               <span>{item.name}</span>
             </a>
-          ))}
+          )))
+          }
         </nav>
       </div>
 

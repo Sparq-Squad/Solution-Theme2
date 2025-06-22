@@ -1,6 +1,47 @@
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+import { use, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const RegisterPage = () => {
+    const navigate = useNavigate();
+
+    const [form,setForm]=useState({
+        name: '',
+        email: '',
+        password: '',
+        confirmPassword: '',
+        terms: '',
+    });
+ 
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setForm((prev) => ({
+      ...prev,
+      [name]: type === 'checkbox' ? checked : value,
+    }));
+  };
+
+    const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (form.password !== form.confirmPassword) {
+      return alert('Passwords do not match');
+    }
+
+    try {
+      const res = await axios.post('http://localhost:5000/user/signup', {
+        name: form.name,
+        email: form.email,
+        password: form.password,
+      });
+
+      alert(res.data.message);
+      navigate('/login');
+    } catch (err) {
+      alert(err.response?.data?.error || 'Registration failed');
+    }
+  };
+
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4 sm:px-6 lg:px-8">
             <div className="max-w-md w-full space-y-8 p-8 bg-white rounded-xl shadow-lg transform transition-all duration-300 hover:shadow-xl">
@@ -15,13 +56,14 @@ const RegisterPage = () => {
                     </p>
                 </div>
 
-                <form className="mt-8 space-y-6" action="#" method="POST">
+                <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
                     <div className="rounded-md shadow-sm space-y-4">
                         <div>
                             <label htmlFor="name" className="sr-only">
                                 Full Name
                             </label>
                             <input
+                                value={form.name}
                                 id="name"
                                 name="name"
                                 type="text"
@@ -29,6 +71,7 @@ const RegisterPage = () => {
                                 required
                                 className="appearance-none rounded-md relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm transition duration-200"
                                 placeholder="Full Name"
+                                onChange={handleChange}
                             />
                         </div>
                         <div>
@@ -36,6 +79,7 @@ const RegisterPage = () => {
                                 Email address
                             </label>
                             <input
+                                value={form.email}
                                 id="email-address"
                                 name="email"
                                 type="email"
@@ -43,6 +87,7 @@ const RegisterPage = () => {
                                 required
                                 className="appearance-none rounded-md relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm transition duration-200"
                                 placeholder="Email address"
+                                onChange={handleChange}
                             />
                         </div>
                         <div>
@@ -50,6 +95,7 @@ const RegisterPage = () => {
                                 Password
                             </label>
                             <input
+                                value={form.password}
                                 id="password"
                                 name="password"
                                 type="password"
@@ -57,6 +103,7 @@ const RegisterPage = () => {
                                 required
                                 className="appearance-none rounded-md relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm transition duration-200"
                                 placeholder="Password"
+                                onChange={handleChange}
                             />
                         </div>
                         <div>
@@ -64,25 +111,29 @@ const RegisterPage = () => {
                                 Confirm Password
                             </label>
                             <input
+                                value={form.confirmPassword}
                                 id="password-confirm"
-                                name="password-confirm"
+                                name="confirmPassword"
                                 type="password"
                                 autoComplete="new-password"
                                 required
                                 className="appearance-none rounded-md relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm transition duration-200"
                                 placeholder="Confirm Password"
+                                onChange={handleChange}
                             />
                         </div>
                     </div>
 
                     <div className="flex items-center">
                         <input
+                            checked={form.terms}
                             id="terms"
                             name="terms"
                             type="checkbox"
                             required
                             className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
-                        />
+                            onChange={handleChange}
+                       />
                         <label htmlFor="terms" className="ml-2 block text-sm text-gray-900">
                             I agree to the{' '}
                             <a href="#" className="text-indigo-600 hover:text-indigo-500">
