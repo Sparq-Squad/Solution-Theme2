@@ -1,15 +1,15 @@
 import { useState } from 'react';
 import {
-      HomeIcon,
-    ChartBarIcon,
-    CogIcon,
-    UserGroupIcon,
-    QueueListIcon,
-    Bars3Icon,
-    XMarkIcon,
+  HomeIcon,
+  ChartBarIcon,
+  CogIcon,
+  UserGroupIcon,
+  QueueListIcon,
+  Bars3Icon,
+  XMarkIcon,
 } from '@heroicons/react/24/outline';
-import  Input  from '../components/ui/Input';
-import  Label  from '../components/ui/Label';
+import Input from '../components/ui/Input';
+import Label from '../components/ui/Label';
 import Button from '../components/ui/Button';
 import AddProductForm from '../components/AddProductform';
 import ProductTable from '../components/ProductTable';
@@ -28,14 +28,14 @@ const StatCard = ({ title, value, change }) => (
 const Dashboard = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [products, setProducts] = useState([]);
-
+  
 const navigation = [
     { name: 'Dashboard', href: '/dashboard', icon: HomeIcon },
     { name: 'Analytics', href: '/analysis', icon: ChartBarIcon },
     { name: 'Products', href: '#', icon: QueueListIcon },
     { name: 'Audience', href: '#', icon: UserGroupIcon },
     { name: 'Settings', href: '#', icon: CogIcon },
-];
+  ];
 
 
   const handleAddProduct = (newProduct) => {
@@ -71,14 +71,14 @@ const navigation = [
         </div>
         <nav className="mt-6 px-4">
           {navigation.map((item) => (
-           <a
-  key={item.name}
-  href={item.href}
-  className="flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600 mb-2 transition-all"
->
-  <item.icon className="h-5 w-5" /> {/* Fixed: Render as component */}
-  <span>{item.name}</span>
-</a>
+            <a
+              key={item.name}
+              href={item.href}
+              className="flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600 mb-2 transition-all"
+            >
+              <item.icon className="h-5 w-5" /> {/* Fixed: Render as component */}
+              <span>{item.name}</span>
+            </a>
           ))}
         </nav>
       </div>
@@ -111,16 +111,14 @@ const navigation = [
           </div>
         </header>
 
-        {/* Content */}
         <main className="p-6 max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <StatCard title="Total Products" value="124" change="+12% this week" />
             <StatCard title="Avg. Price" value="$28.99" change="-3% this week" />
             <StatCard title="Inventory Score" value="87%" change="+5% this week" />
             <StatCard title="Target Regions" value="14" change="+2 new regions" />
           </div>
 
-          {/* Imported components */}
           <AddProductForm onAddProduct={handleAddProduct} />
           <ProductTable products={products} onDeleteProduct={handleDeleteProduct} />
         </main>
