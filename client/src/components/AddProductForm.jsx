@@ -1,48 +1,69 @@
 import React, { useState, useRef } from 'react';
-import Button  from './ui/Button';
-import  Label  from './ui/Label';
-import  Input from './ui/Input';
+import Button from './ui/Button';
 
-// AddProductForm Component
-const AddProductForm = ({ onAddProduct }) => {
+const ProductFormCard = ({ onAddProduct }) => {
   const [formData, setFormData] = useState({
     name: '',
-    productId: '',
-    platform: '',
     price: '',
-    status: ''
+    description: '',
   });
 
   const [productImage, setProductImage] = useState(null);
   const [imagePreview, setImagePreview] = useState('');
   const [errors, setErrors] = useState({});
-  
   const imageInputRef = useRef(null);
 
-  const validateForm = () => {
-    const newErrors = {};
-    
-    if (!formData.name.trim()) newErrors.name = 'Product name is required';
-    if (!formData.productId.trim()) newErrors.productId = 'Product ID is required';
-    if (!formData.platform) newErrors.platform = 'Platform is required';
-    if (!formData.price.trim()) newErrors.price = 'Price is required';
-    if (!formData.status) newErrors.status = 'Status is required';
-    
-    if (formData.price && isNaN(Number(formData.price))) {
-      newErrors.price = 'Price must be a valid number';
+  const validateField = (field, value) => {
+    const newErrors = { ...errors };
+    switch (field) {
+      case 'name':
+        if (!value.trim()) newErrors.name = 'Product name is required';
+        else delete newErrors.name;
+        break;
+      case 'price':
+        if (!value.trim()) newErrors.price = 'Price is required';
+        else if (isNaN(Number(value))) newErrors.price = 'Must be a valid number';
+        else delete newErrors.price;
+        break;
+      case 'description':
+        if (!value.trim()) newErrors.description = 'Description is required';
+        else delete newErrors.description;
+        break;
+      default:
+        break;
     }
-
     setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    
-    if (!validateForm()) return;
+  const handleInputChange = (field, value) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+    validateField(field, value);
+  };
 
-    let imageUrl = "https://via.placeholder.com/100";
-    
+  const triggerFileInput = () => {
+    imageInputRef.current.click();
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setProductImage(file);
+      const reader = new FileReader();
+      reader.onload = (e) => setImagePreview(e.target.result);
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleSubmit = () => {
+    const isValid = Object.keys(formData).reduce((acc, key) => {
+      validateField(key, formData[key]);
+      return acc;
+    }, true);
+
+    if (Object.keys(errors).length > 0) return;
+
+    let imageUrl = "https://via.placeholder.com/300x300";
+
     if (productImage) {
       const reader = new FileReader();
       reader.onload = (e) => {
@@ -59,173 +80,98 @@ const AddProductForm = ({ onAddProduct }) => {
     const newProduct = {
       id: Date.now().toString(),
       name: formData.name,
-      productId: formData.productId,
-      platform: formData.platform,
       price: formData.price,
-      status: formData.status,
-      image: imageUrl
+      description: formData.description,
+      image: imageUrl,
     };
 
     onAddProduct(newProduct);
-    resetForm();
-  };
-
-  const resetForm = () => {
-    setFormData({
-      name: '',
-      productId: '',
-      platform: '',
-      price: '',
-      status: ''
-    });
-    setProductImage(null);
-    setImagePreview('');
-    setErrors({});
-    
-    if (imageInputRef.current) {
-      imageInputRef.current.value = '';
-    }
-  };
-
-  const handleInputChange = (field, value) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
-    if (errors[field]) {
-      setErrors(prev => ({ ...prev, [field]: '' }));
-    }
-  };
-
-  const handleImageChange = (e) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setProductImage(file);
-      
-      // Create preview
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setImagePreview(e.target?.result);
-      };
-      reader.readAsDataURL(file);
-    }
   };
 
   return (
-    <div className="mb-8 bg-white rounded-lg shadow">
-      <div className="px-6 py-4 border-b">
-        <h2 className="text-lg font-medium text-gray-800">Add New Product</h2>
-      </div>
-      <div className="p-6">
-        <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          <div className="space-y-2">
-            <Label htmlFor="name">Product Name</Label>
-            <Input
+    <div className="mx-auto my-8 bg-white rounded-lg shadow-md overflow-hidden p-6 transition-all duration-300">
+      <div className="flex flex-col md:flex-row gap-6">
+        <div className="md:w-1/3">
+          <div
+            onClick={triggerFileInput}
+            className={`relative h-64 w-full bg-gray-100 flex items-center justify-center border-2 border-dashed rounded-lg cursor-pointer hover:border-blue-500 transition-all ${errors.image ? 'border-red-500' : 'border-gray-300'
+              }`}
+          >
+            {imagePreview ? (
+              <img src={imagePreview} alt="Product" className="object-cover w-full h-full rounded-lg" />
+            ) : (
+              <span className="text-sm text-gray-500 text-center px-4">
+                Click to upload product image<br />(PNG, JPG up to 5MB)
+              </span>
+            )}
+          </div>
+          <input
+            ref={imageInputRef}
+            type="file"
+            accept="image/*"
+            onChange={handleImageChange}
+            className="hidden"
+          />
+          {errors.image && <p className="text-xs text-red-500 mt-1">{errors.image}</p>}
+        </div>
+
+        <div className="md:w-2/3 space-y-4">
+          <div className="space-y-1">
+            <label htmlFor="name" className="block text-sm font-medium text-gray-700">Product Name</label>
+            <input
               id="name"
               type="text"
               value={formData.name}
               onChange={(e) => handleInputChange('name', e.target.value)}
               placeholder="Enter product name"
-              className={errors.name ? 'border-red-500' : ''}
+              className={`w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 outline-none transition ${errors.name ? 'border-red-500' : 'border-gray-300'
+                }`}
             />
-            {errors.name && <p className="text-sm text-red-500">{errors.name}</p>}
+            {errors.name && <p className="text-xs text-red-500 mt-1">{errors.name}</p>}
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="productId">Product ID</Label>
-            <Input
-              id="productId"
-              type="text"
-              value={formData.productId}
-              onChange={(e) => handleInputChange('productId', e.target.value)}
-              placeholder="Enter product ID"
-              className={errors.productId ? 'border-red-500' : ''}
-            />
-            {errors.productId && <p className="text-sm text-red-500">{errors.productId}</p>}
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="platform">Platform</Label>
-            <select
-              id="platform"
-              value={formData.platform}
-              onChange={(e) => handleInputChange('platform', e.target.value)}
-              className={`w-full h-10 rounded-md border ${
-                errors.platform ? 'border-red-500' : 'border-gray-300'
-              } bg-white px-3 py-2 text-base shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500`}
-            >
-              <option value="">Select platform</option>
-              <option value="Amazon">Amazon</option>
-              <option value="Flipkart">Flipkart</option>
-              <option value="Walmart">Walmart</option>
-              <option value="eBay">eBay</option>
-              <option value="Shopify">Shopify</option>
-            </select>
-            {errors.platform && <p className="text-sm text-red-500">{errors.platform}</p>}
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="price">Price</Label>
-            <Input
+          <div className="space-y-1">
+            <label htmlFor="price" className="block text-sm font-medium text-gray-700">Price</label>
+            <input
               id="price"
               type="number"
               step="0.01"
               value={formData.price}
               onChange={(e) => handleInputChange('price', e.target.value)}
               placeholder="Enter price"
-              className={errors.price ? 'border-red-500' : ''}
+              className={`w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 outline-none transition ${errors.price ? 'border-red-500' : 'border-gray-300'
+                }`}
             />
-            {errors.price && <p className="text-sm text-red-500">{errors.price}</p>}
+            {errors.price && <p className="text-xs text-red-500 mt-1">{errors.price}</p>}
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="status">Status</Label>
-            <select
-              id="status"
-              value={formData.status}
-              onChange={(e) => handleInputChange('status', e.target.value)}
-              className={`w-full h-10 rounded-md border ${
-                errors.status ? 'border-red-500' : 'border-gray-300'
-              } bg-white px-3 py-2 text-base shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500`}
-            >
-              <option value="">Select status</option>
-              <option value="Active">Active</option>
-              <option value="Inactive">Inactive</option>
-            </select>
-            {errors.status && <p className="text-sm text-red-500">{errors.status}</p>}
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="image">Product Image</Label>
-            <input
-              id="image"
-              type="file"
-              accept="image/*"
-              ref={imageInputRef}
-              onChange={handleImageChange}
-              className="block w-full text-sm text-gray-500
-                file:mr-4 file:py-2 file:px-4
-                file:rounded file:border-0
-                file:text-sm file:font-semibold
-                file:bg-blue-50 file:text-blue-700
-                hover:file:bg-blue-100"
+          <div className="space-y-1">
+            <label htmlFor="description" className="block text-sm font-medium text-gray-700">Description</label>
+            <textarea
+              id="description"
+              rows="4"
+              value={formData.description}
+              onChange={(e) => handleInputChange('description', e.target.value)}
+              placeholder="Enter product description"
+              className={`w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 outline-none transition ${errors.description ? 'border-red-500' : 'border-gray-300'
+                }`}
             />
-            {imagePreview && (
-              <div className="mt-2">
-                <img 
-                  src={imagePreview} 
-                  alt="Preview" 
-                  className="w-20 h-20 object-cover rounded border"
-                />
-              </div>
-            )}
+            {errors.description && <p className="text-xs text-red-500 mt-1">{errors.description}</p>}
           </div>
+        </div>
+      </div>
 
-          <div className="md:col-span-2 lg:col-span-3 flex justify-end">
-            <Button type="submit" className="w-full md:w-auto">
-              Add Product
-            </Button>
-          </div>
-        </form>
+      <div className="mt-6 flex justify-end">
+        <Button
+          onClick={handleSubmit}
+          disabled={!formData.name || !formData.price || !formData.description}
+          className="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        >
+          Save Product
+        </Button>
       </div>
     </div>
   );
 };
-export default AddProductForm;
+
+export default ProductFormCard;
