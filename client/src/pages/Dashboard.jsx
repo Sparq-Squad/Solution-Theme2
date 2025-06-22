@@ -30,8 +30,8 @@ const Dashboard = () => {
   const [products, setProducts] = useState([]);
 
 const navigation = [
-    { name: 'Dashboard', href: '#', icon: HomeIcon },
-    { name: 'Analytics', href: '#', icon: ChartBarIcon },
+    { name: 'Dashboard', href: '/dashboard', icon: HomeIcon },
+    { name: 'Analytics', href: '/analysis', icon: ChartBarIcon },
     { name: 'Products', href: '#', icon: QueueListIcon },
     { name: 'Audience', href: '#', icon: UserGroupIcon },
     { name: 'Settings', href: '#', icon: CogIcon },
@@ -47,6 +47,8 @@ const navigation = [
   };
 
   return (
+    
+        
     <div className="min-h-screen bg-gray-100">
       {/* Mobile sidebar toggle */}
       <button
