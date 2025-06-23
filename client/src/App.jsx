@@ -6,6 +6,9 @@ import Footer from './components/Footer';
 import RegisterPage from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import AnalyticsDashboard from './pages/Analytics';
+import { DashboardProvider } from './context/DashboardContext';
+import AddProductForm from './components/AddProductForm';
+import ProductTable from './components/ProductTable';
 
 function App() {
 
@@ -33,8 +36,13 @@ function App() {
             <Footer />
           </>
         } />
-        <Route path='/dashboard' element={<Dashboard />} />
-        <Route path='/analysis'  element={<AnalyticsDashboard/>}/>
+        <Route path="/dashboard" element={<Dashboard />}>
+          <Route index element={<>
+            <AddProductForm />
+            <ProductTable />
+          </>} />
+          <Route path='analysis' element={<AnalyticsDashboard />} />
+        </Route>
       </Routes>
 
     </BrowserRouter>
