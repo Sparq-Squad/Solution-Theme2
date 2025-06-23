@@ -1,13 +1,5 @@
 import React, { useState } from 'react';
 import { 
-  TrendingUp, 
-  TrendingDown, 
-  DollarSign, 
-  Target, 
-  BarChart3, 
-  ShoppingCart 
-} from 'lucide-react';
-import { 
   LineChart, 
   Line, 
   XAxis, 
@@ -29,8 +21,11 @@ import {
     CogIcon,
     UserGroupIcon,
     QueueListIcon,
-    Bars3Icon,
-    XMarkIcon,
+    ArrowTrendingUpIcon,
+    ArrowTrendingDownIcon,
+    CurrencyDollarIcon,
+    LifebuoyIcon,
+    ShoppingBagIcon,
 } from '@heroicons/react/24/outline';
 
 const navigation = [
@@ -45,7 +40,6 @@ const navigation = [
 const AnalyticsDashboard = () => {
   const [selectedProduct, setSelectedProduct] = useState('wireless-headphones');
 
-  // Sample data for metrics
   const keyMetrics = [
     {
       title: 'Estimated Revenue',
@@ -77,7 +71,6 @@ const AnalyticsDashboard = () => {
     }
   ];
 
-  // Competitive products data
   const competitiveProducts = [
     {
       id: 1,
@@ -125,7 +118,6 @@ const AnalyticsDashboard = () => {
     }
   ];
 
-  // Forecast data
   const forecastData = [
     { month: 'Jan', sales: 120, revenue: 10800, forecast: 135 },
     { month: 'Feb', sales: 135, revenue: 12150, forecast: 148 },
@@ -205,9 +197,9 @@ const AnalyticsDashboard = () => {
                   <p className="text-2xl font-bold text-gray-900 mt-2">{metric.value}</p>
                   <div className="flex items-center mt-2">
                     {metric.trend === 'up' ? (
-                      <TrendingUp className="w-4 h-4 text-green-500 mr-1" />
+                      <ArrowTrendingUpIcon className="w-4 h-4 text-green-500 mr-1" />
                     ) : (
-                      <TrendingDown className="w-4 h-4 text-red-500 mr-1" />
+                      <ArrowTrendingDownIcon className="w-4 h-4 text-red-500 mr-1" />
                     )}
                     <span className={`text-sm font-medium ${metric.trend === 'up' ? 'text-green-600' : 'text-red-600'}`}>
                       {metric.change}
@@ -216,7 +208,7 @@ const AnalyticsDashboard = () => {
                   </div>
                 </div>
                 <div className="p-3 bg-blue-50 rounded-lg">
-                  <DollarSign className="w-6 h-6 text-blue-600" />
+                  <CurrencyDollarIcon className="w-6 h-6 text-blue-600" />
                 </div>
               </div>
             </div>
@@ -340,7 +332,7 @@ const AnalyticsDashboard = () => {
                   </div>
                   <div className="flex items-center">
                     <span className="text-green-600 font-medium">+{trend.growth}%</span>
-                    <TrendingUp className="w-4 h-4 text-green-500 ml-1" />
+                    <ArrowTrendingUpIcon className="w-4 h-4 text-green-500 ml-1" />
                   </div>
                 </div>
               ))}
@@ -373,21 +365,21 @@ const AnalyticsDashboard = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
               <div className="flex items-center mb-3">
-                <Target className="w-5 h-5 text-blue-600 mr-2" />
+                <LifebuoyIcon className="w-5 h-5 text-blue-600 mr-2" />
                 <h4 className="font-medium text-blue-900">Price Optimization</h4>
               </div>
               <p className="text-sm text-blue-800">Consider increasing price by 8-12% based on competitive analysis.</p>
             </div>
             <div className="bg-green-50 border border-green-200 rounded-lg p-4">
               <div className="flex items-center mb-3">
-                <BarChart3 className="w-5 h-5 text-green-600 mr-2" />
+                <ChartBarIcon className="w-5 h-5 text-green-600 mr-2" />
                 <h4 className="font-medium text-green-900">Inventory Planning</h4>
               </div>
               <p className="text-sm text-green-800">Stock up for Q3 - forecast shows 35% increase in demand.</p>
             </div>
             <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
               <div className="flex items-center mb-3">
-                <ShoppingCart className="w-5 h-5 text-purple-600 mr-2" />
+                <ShoppingBagIcon className="w-5 h-5 text-purple-600 mr-2" />
                 <h4 className="font-medium text-purple-900">Marketing Focus</h4>
               </div>
               <p className="text-sm text-purple-800">Target premium segment - 22% growth opportunity identified.</p>

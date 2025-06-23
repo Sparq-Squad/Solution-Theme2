@@ -1,12 +1,16 @@
-import React, { useState, useRef } from 'react';
 import Button from './ui/Button';
+import { useContext, useState, useRef } from 'react';
+import { DashboardContext } from '../context/DashboardContext';
 
-const ProductFormCard = ({ onAddProduct }) => {
+const ProductFormCard = () => {
   const [formData, setFormData] = useState({
     name: '',
     price: '',
     description: '',
   });
+
+  const { handleAddProduct } = useContext(DashboardContext);
+
 
   const [productImage, setProductImage] = useState(null);
   const [imagePreview, setImagePreview] = useState('');
@@ -85,7 +89,7 @@ const ProductFormCard = ({ onAddProduct }) => {
       image: imageUrl,
     };
 
-    onAddProduct(newProduct);
+    handleAddProduct(newProduct);
   };
 
   return (
