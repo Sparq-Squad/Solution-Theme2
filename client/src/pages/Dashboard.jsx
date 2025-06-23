@@ -28,7 +28,7 @@ const StatCard = ({ title, value, change }) => (
 const Dashboard = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [products, setProducts] = useState([]);
-
+  
 const navigation = [
     { name: 'Dashboard', href: '/dashboard', icon: HomeIcon },
     { name: 'Analytics', href: '/analysis', icon: ChartBarIcon },
