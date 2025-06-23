@@ -167,6 +167,9 @@ const AnalyticsDashboard = () => {
     return variants[position] || 'bg-gray-100 text-gray-800';
   };
 
+
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-7xl mx-auto space-y-6">
