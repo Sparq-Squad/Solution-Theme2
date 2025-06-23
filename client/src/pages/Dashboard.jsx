@@ -94,7 +94,7 @@ const handleLogout = async () => {
         <button
         key={item.name}
         onClick={handleLogout}
-        className="flex w-full items-center space-x-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-600 mb-2 transition-all"
+        className="cursor-pointer flex w-full items-center space-x-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-600 mb-2 transition-all"
       >
         <item.icon className="h-5 w-5" />
         <span>{item.name}</span>

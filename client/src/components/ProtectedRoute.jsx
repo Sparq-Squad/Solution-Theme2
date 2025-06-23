@@ -23,4 +23,5 @@ function ProtectedRoute({ children }) {
   return children;                                        // Authenticated → render
 }
 
+
 export default ProtectedRoute;
