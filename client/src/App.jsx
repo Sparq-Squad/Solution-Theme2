@@ -14,6 +14,7 @@ function App() {
 
   return (
     <BrowserRouter>
+    <DashboardProvider></DashboardProvider>
       <Routes>
         <Route path='/' element={
           <>
