@@ -1,8 +1,9 @@
-import React from 'react';
-import Button  from './ui/Button';
+import Button from './ui/Button';
+import { useContext } from 'react';
+import { DashboardContext } from '../context/DashboardContext';
 
-// ProductTable Component
-const ProductTable = ({ products, onDeleteProduct }) => {
+const ProductTable = () => {
+  const { products, handleDeleteProduct } = useContext(DashboardContext);
   const handleEdit = (id) => {
     console.log('Edit product:', id);
   };
@@ -39,11 +40,10 @@ const ProductTable = ({ products, onDeleteProduct }) => {
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{product.platform}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${product.price}</td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                    product.status === 'Active' 
-                      ? 'bg-green-100 text-green-800' 
+                  <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${product.status === 'Active'
+                      ? 'bg-green-100 text-green-800'
                       : 'bg-gray-100 text-gray-800'
-                  }`}>
+                    }`}>
                     {product.status}
                   </span>
                 </td>
@@ -59,7 +59,7 @@ const ProductTable = ({ products, onDeleteProduct }) => {
                   <Button
                     variant="ghost"
                     size="sm"
-                    onClick={() => onDeleteProduct(product.id)}
+                    onClick={() => handleDeleteProduct(product.id)}
                     className="text-red-600 hover:text-red-900"
                   >
                     Delete

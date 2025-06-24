@@ -4,7 +4,7 @@ import { Navigate } from "react-router-dom";
 
 function ProtectedRoute({ children }) {
   const [isAuth, setIsAuth] = useState(null);
-
+  console.log("Protected Route");
   useEffect(() => {
     fetch('http://localhost:5000/user/verify', {
       method: 'GET',
