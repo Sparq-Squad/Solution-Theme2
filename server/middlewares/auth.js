@@ -1,4 +1,4 @@
-const { getUser } = require('../service/auth');
+import {getUser} from '../service/auth';
 
 function restrictToLoggedinUserOnly(req, res, next) {
   try {

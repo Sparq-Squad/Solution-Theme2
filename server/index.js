@@ -1,46 +1,45 @@
-// require modules
-const express= require('express');
-const app=express();
-const PORT=process.env.PORT || 5000;
-const userRoute=require('./routes/user');
-const staticRoute=require('./routes/staticRouter');
-const path=require('path');
-const {connectToMongoDb}=require('./connections/connect');
-const cookieParser = require('cookie-parser');
-const {restrictToLoggedinUserOnly} = require('./middlewares/auth');
-const cors=require('cors');
-require('dotenv').config()
+import express from "express";
+import userRoute from "./routes/user";
+import staticRoute from "./routes/staticRouter";
+import { connectToMongoDb } from "./connections/connect";
+import { restrictToLoggedinUserOnly } from "./middlewares/auth";
+import cookieParser from "cookie-parser";
+import cors from "cors";
+
+const app = express();
+const PORT = process.env.PORT || 5000;
+
+require("dotenv").config();
+
 //connect to database
-
-const mongoUrl=process.env.MONGO_URL_CLOUD;
-const mongoPromise=connectToMongoDb(mongoUrl);
-mongoPromise.then(()=>{
+const mongoPromise = connectToMongoDb(
+  process.env.MONGO_URL_CLOUD ?? "mongodb://localhost:27017/"
+);
+mongoPromise
+  .then(() => {
     console.log("Connected to Mongo Database");
-}).catch((err)=>{
-    console.log(err,"Error in connecting to database");
-})
-
-//connecting interactivity
-// app.set('view engine','ejs');
-// app.set('views',path.resolve("./views"));
-
+  })
+  .catch((err) => {
+    console.log(err, "Error in connecting to database");
+  });
 
 //Middlewares
-app.use(cors({
-  origin: 'http://localhost:5173',
-  credentials: true  
-}));
+app.use(
+  cors({
+    origin: process.env.FRONTEND_URL ?? "http://localhost:5173",
+    credentials: true,
+  })
+);
+
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+//Routes
+app.use("/", staticRoute);
+app.use("/user", userRoute);
+app.use("/dashboard", restrictToLoggedinUserOnly);
 
-//Routing middlewares
-app.use("/",staticRoute);
-app.use("/user",userRoute);
-app.use("/dashboard",restrictToLoggedinUserOnly);
-
-//Server running port
-app.listen(PORT,()=>{
-    console.log(`server is running on port ${PORT}`);
+app.listen(PORT, () => {
+  console.log(`server is running on port ${PORT}`);
 });

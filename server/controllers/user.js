@@ -1,63 +1,65 @@
-const path = require('path');
-const User=require('../models/user');
-const {setUser,getUser}=require('../service/auth');
+import path from "path";
+import { setUser, getUser } from "../service/auth";
+import User from "../models/user";
 
-async function handleUserSignup(req, res){
+async function handleUserSignup(req, res) {
   const { name, email, password } = req.body;
   try {
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return res.status(400).json({ error: 'User already exists' });
+      return res.status(400).json({ error: "User already exists" });
     }
     const newUser = await User.create({ name, email, password });
-    return res.status(201).json({ message: 'User registered successfully', user: newUser });
+    return res
+      .status(201)
+      .json({ message: "User registered successfully", user: newUser });
   } catch (error) {
-    console.error('Signup error:', error);
-    return res.status(500).json({ error: 'Internal server error' });
+    console.error("Signup error:", error);
+    return res.status(500).json({ error: "Internal server error" });
   }
 }
 
-async function handleUserLogin(req, res){
+async function handleUserLogin(req, res) {
   const { email, password } = req.body;
 
   try {
     const user = await User.findOne({ email, password });
     if (!user) {
-      return res.status(401).json({ error: 'Invalid email or password' });
+      return res.status(401).json({ error: "Invalid email or password" });
     }
 
     const token = setUser(user);
-    res.cookie('UID', token, {
+    res.cookie("UID", token, {
       httpOnly: true, // secure cookie
       secure: false, // Set to true in production with HTTPS
-      path: '/',
-      sameSite:'Lax'
+      path: "/",
+      sameSite: "Lax",
     });
 
-    return res.status(200).json({ message: 'Login successful', user , token });
+    return res.status(200).json({ message: "Login successful", user, token });
   } catch (error) {
-    console.error('Login error:', error);
-    return res.status(500).json({ error: 'Internal server error' });
+    console.error("Login error:", error);
+    return res.status(500).json({ error: "Internal server error" });
   }
 }
 
-async function handleUserLogout(req,res){
-  try{
-    res.clearCookie('UID',{
+async function handleUserLogout(req, res) {
+  try {
+    res.clearCookie("UID", {
       httpOnly: true,
       secure: false,
-      path: '/',
-      sameSite:'Lax'
+      path: "/",
+      sameSite: "Lax",
     });
-    return res.status(200).json({message:"Logout successful"});
-  }catch(error){
-    console.error('Logout error:', error);
-    return res.status(500).json({ error: 'Internal server error' });
+    return res.status(200).json({ message: "Logout successful" });
+  } catch (error) {
+    console.error("Logout error:", error);
+    return res.status(500).json({ error: "Internal server error" });
   }
 }
 
-module.exports={
-    handleUserSignup,
-    handleUserLogin,
-    handleUserLogout,
-}
+module.exports = {
+  handleUserSignup,
+  handleUserLogin,
+  handleUserLogout,
+};

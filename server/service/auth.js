@@ -1,17 +1,19 @@
-const jwt=require('jsonwebtoken');
-const secretKey=process.env.SECRET_KEY;
+import jwt from 'jsonwebtoken';
 
-function setUser(user){
-    const payload={...user};
-    const tokenGenerated=jwt.sign(payload,secretKey);
-    return tokenGenerated;
+function setUser(user) {
+  const payload = { ...user };
+  const tokenGenerated = jwt.sign(
+    payload,
+    process.env.SECRET_KEY ?? "atopsecretkey"
+  );
+  return tokenGenerated;
 }
 
-function getUser(token){
-  if(!token){
+function getUser(token) {
+  if (!token) {
     return null;
   }
-  return jwt.verify(token,secretKey);
+  return jwt.verify(token, secretKey);
 }
 
-module.exports={setUser,getUser};
+module.exports = { setUser, getUser };
