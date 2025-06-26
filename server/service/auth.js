@@ -1,5 +1,5 @@
 const jwt=require('jsonwebtoken');
-const secretKey="Pminsights";
+const secretKey=process.env.SECRET_KEY;
 
 function setUser(user){
     const payload={...user};
