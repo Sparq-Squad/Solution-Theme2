@@ -1,13 +1,12 @@
 import { Link } from "react-router-dom";
 import axios from "axios";
-import { use, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import LoadingSpinner from "../components/ui/LoadingSpinner";
-import {AlertMessage} from '../components/ui/AlertMessage';
 import { useAlert } from "../context/AlertContext";
 
 const RegisterPage = () => {
-  const {setAlert} = useAlert();
+  const { setAlert } = useAlert();
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
@@ -28,38 +27,38 @@ const RegisterPage = () => {
     }));
   };
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  if (form.password !== form.confirmPassword) {
-   return setAlert({ message: "Passwords do not match", type: "error" });
-  }
+    if (form.password !== form.confirmPassword) {
+      return setAlert({ message: "Passwords do not match", type: "error" });
+    }
 
-  setLoading(true);
+    setLoading(true);
 
-  try {
-    const res = await axios.post("http://localhost:5000/user/signup", {
-      name: form.name,
-      email: form.email,
-      password: form.password,
-    });
+    try {
+      const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/user/signup`, {
+        name: form.name,
+        email: form.email,
+        password: form.password,
+      });
 
-    setAlert({
-      message: res.data.message || "Registration successful",
-      type: "success",
-    });
+      setAlert({
+        message: res.data.message || "Registration successful",
+        type: "success",
+      });
 
-    // Navigate after short delay to allow user to read the message
-    setTimeout(() => navigate("/login"), 1000);
-  } catch (err) {
-    setAlert({
-      message: err.response?.data?.error || "Registration failed",
-      type: "error",
-    });
-  } finally {
-    setLoading(false);
-  }
-};
+      // Navigate after short delay to allow user to read the message
+      setTimeout(() => navigate("/login"), 1000);
+    } catch (err) {
+      setAlert({
+        message: err.response?.data?.error || "Registration failed",
+        type: "error",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
 
   return (
@@ -174,9 +173,8 @@ const handleSubmit = async (e) => {
             <button
               type="submit"
               disabled={loading}
-              className={`cursor-pointer group relative w-full flex justify-center items-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-200 transform hover:scale-[1.02] ${
-                loading ? "opacity-50 cursor-not-allowed" : ""
-              }`}
+              className={`cursor-pointer group relative w-full flex justify-center items-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-200 transform hover:scale-[1.02] ${loading ? "opacity-50 cursor-not-allowed" : ""
+                }`}
             >
               {loading ? (
                 <>

@@ -1,12 +1,12 @@
 import axios from "axios";
-import { use, useState } from "react";
+import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import LoadingSpinner from "../components/ui/LoadingSpinner";
-import {AlertMessage} from '../components/ui/AlertMessage';
+import { AlertMessage } from '../components/ui/AlertMessage';
 import { useAlert } from "../context/AlertContext";
 
 const LoginPage = () => {
-  const {setAlert} = useAlert();
+  const { setAlert } = useAlert();
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const [form, setForm] = useState({
@@ -23,50 +23,49 @@ const LoginPage = () => {
     }));
   };
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  setLoading(true);
-  
-  try {
-    const res = await axios.post(
-      "http://localhost:5000/user/login",
-      {
-        email: form.email,
-        password: form.password,
-        rememberMe: form.rememberMe,
-      },
-      { withCredentials: true }
-    );
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      const res = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/user/login`,
+        {
+          email: form.email,
+          password: form.password,
+          rememberMe: form.rememberMe,
+        },
+        { withCredentials: true }
+      );
 
-    if (form.rememberMe) {
-      localStorage.setItem("rememberMe", res.data.token);
+      if (form.rememberMe) {
+        localStorage.setItem("rememberMe", res.data.token);
+      }
+
+
+      setAlert({
+        message: res.data.message || "Login successful",
+        type: 'success',
+      });
+
+
+      setTimeout(() => {
+        navigate("/dashboard");
+      }, 2000);
+
+    } catch (err) {
+      setAlert({
+        message: err.response?.data?.error || "Login failed",
+        type: 'error',
+      });
+    } finally {
+      setLoading(false);
     }
-
-
-    setAlert({
-      message: res.data.message || "Login successful",
-      type: 'success',
-    });
-   
-
-    setTimeout(() => {
-      navigate("/dashboard");
-    }, 2000);
-
-  } catch (err) {
-    setAlert({
-      message: err.response?.data?.error || "Login failed",
-      type: 'error',
-    });
-  } finally {
-    setLoading(false);
-  }
-};
+  };
 
 
 
   return (
-    
+
     <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8 p-8 bg-white rounded-xl shadow-lg transform transition-all duration-300 hover:shadow-xl">
         <div className="text-center">
@@ -85,13 +84,13 @@ const handleSubmit = async (e) => {
         </div>
 
         <form onSubmit={handleSubmit} className="mt-8 space-y-6">
-                                     {alert && (
-          <AlertMessage
-            message={alert.message}
-            type={alert.type}
-            onClose={() => setAlert(null)}
-          />
-        )}
+          {alert && (
+            <AlertMessage
+              message={alert.message}
+              type={alert.type}
+              onClose={() => setAlert(null)}
+            />
+          )}
           <div className="rounded-md shadow-sm space-y-4">
             <div>
               <label htmlFor="email-address" className="sr-only">
@@ -159,9 +158,8 @@ const handleSubmit = async (e) => {
             <button
               disabled={loading}
               type="submit"
-              className={`cursor-pointer group relative w-full flex justify-center items-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-200 transform hover:scale-[1.02] ${
-                loading ? "opacity-50 cursor-not-allowed" : ""
-              }`}
+              className={`cursor-pointer group relative w-full flex justify-center items-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-200 transform hover:scale-[1.02] ${loading ? "opacity-50 cursor-not-allowed" : ""
+                }`}
             >
               {loading ? (
                 <>
