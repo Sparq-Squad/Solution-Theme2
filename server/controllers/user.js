@@ -1,6 +1,5 @@
-import path from "path";
-import { setUser, getUser } from "../service/auth";
-import User from "../models/user";
+const { setUser, getUser } = require('../service/auth.js');
+const User = require('../models/user.js');
 
 async function handleUserSignup(req, res) {
   const { name, email, password } = req.body;

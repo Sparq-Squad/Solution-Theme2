@@ -1,10 +1,10 @@
-import express from "express";
-import { restrictToLoggedinUserOnly } from "../middlewares/auth";
-import {
+const express = require("express");
+const { restrictToLoggedinUserOnly } = require("../middlewares/auth.js");
+const {
   handleUserLogin,
   handleUserLogout,
   handleUserSignup,
-} from "../controllers/user";
+} = require("../controllers/user.js");
 
 const router = express.Router();
 

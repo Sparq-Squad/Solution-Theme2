@@ -1,4 +1,4 @@
-import jwt from 'jsonwebtoken';
+const jwt = require("jsonwebtoken");
 
 function setUser(user) {
   const payload = { ...user };
@@ -13,7 +13,7 @@ function getUser(token) {
   if (!token) {
     return null;
   }
-  return jwt.verify(token, secretKey);
+  return jwt.verify(token,  process.env.SECRET_KEY ?? "atopsecretkey");
 }
 
 module.exports = { setUser, getUser };

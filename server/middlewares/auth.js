@@ -1,4 +1,4 @@
-import {getUser} from '../service/auth';
+const {getUser} = require('../service/auth.js');
 
 function restrictToLoggedinUserOnly(req, res, next) {
   try {
@@ -8,7 +8,7 @@ function restrictToLoggedinUserOnly(req, res, next) {
       return res.status(401).json({ error: 'Unauthorized: No token provided' });
     }
 
-    const user = getUser(token); // getUser internally verifies the JWT
+    const user = getUser(token);
 
     if (!user) {
       return res.status(403).json({ error: 'Forbidden: Invalid or expired token' });

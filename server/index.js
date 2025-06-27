@@ -1,10 +1,10 @@
-import express from "express";
-import userRoute from "./routes/user";
-import staticRoute from "./routes/staticRouter";
-import { connectToMongoDb } from "./connections/connect";
-import { restrictToLoggedinUserOnly } from "./middlewares/auth";
-import cookieParser from "cookie-parser";
-import cors from "cors";
+const express = require("express");
+const cookieParser = require("cookie-parser");
+const cors = require("cors");
+const userRoute = require("./routes/user.js");
+const staticRoute = require("./routes/staticRouter.js");
+const { connectToMongoDb } = require("./connections/connect.js");
+const { restrictToLoggedinUserOnly } = require("./middlewares/auth.js");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
