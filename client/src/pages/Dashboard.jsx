@@ -9,7 +9,7 @@ import {
   CogIcon,
   UserGroupIcon,
   QueueListIcon,
-  ArrowRightOnRectangleIcon,
+  PowerIcon,
 } from '@heroicons/react/24/outline';
 
 import DashboardHeader from '../components/DashboardHeader';
@@ -26,7 +26,7 @@ const Dashboard = () => {
     { name: 'Products', href: '#', icon: QueueListIcon },
     { name: 'Audience', href: '#', icon: UserGroupIcon },
     { name: 'Settings', href: '#', icon: CogIcon },
-    { name: 'Logout', href: '/', icon: ArrowRightOnRectangleIcon },
+    { name: 'Logout', href: '/', icon: PowerIcon },
   ];
 
   const getTitlefromPath = (path) => {
@@ -42,7 +42,7 @@ const Dashboard = () => {
   // logout logic
   const handleLogout = async () => {
     try {
-      await axios.post('http://localhost:5000/user/logout', {}, { withCredentials: true });
+      await axios.post(`${import.meta.env.VITE_BACKEND_URL}/user/logout`, {}, { withCredentials: true });
       localStorage.removeItem('rememberMe');
       navigate('/');
     } catch (err) {
@@ -53,7 +53,6 @@ const Dashboard = () => {
   return (
     <DashboardProvider>
       <div className="min-h-screen bg-gray-100">
-        {/* Mobile sidebar toggle */}
         <button
           onClick={() => setSidebarOpen(true)}
           className="md:hidden fixed top-4 left-4 z-50 p-2 rounded-md text-gray-600 bg-white shadow-md"
@@ -63,9 +62,8 @@ const Dashboard = () => {
 
         {/* Sidebar */}
         <div
-          className={`fixed inset-y-0 left-0 z-40 w-64 bg-white shadow-lg transform ${
-            sidebarOpen ? 'translate-x-0' : '-translate-x-full'
-          } md:translate-x-0 transition-transform duration-200 ease-in-out`}
+          className={`fixed inset-y-0 left-0 z-40 w-64 bg-white shadow-lg transform ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+            } md:translate-x-0 transition-transform duration-200 ease-in-out`}
         >
           <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
             <h1 className="text-xl font-bold text-blue-600">AI Business Analyst</h1>
