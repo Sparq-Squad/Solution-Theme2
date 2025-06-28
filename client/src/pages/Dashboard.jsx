@@ -23,24 +23,16 @@ const Dashboard = () => {
 
   const navigation = [
     { name: 'Overview', href: '/dashboard', icon: Squares2X2Icon },
-    { name: 'Add Product', href: '/dashboard/analysis', icon: PlusIcon },
-    { name: 'Market Insight', href: '#', icon: ChartBarIcon },
-    { name: 'Price Strategy', href: '#', icon: CurrencyRupeeIcon },
-    { name: 'Marketing & Branding', href: '#', icon: GiftIcon },
-    { name: 'Logistic Planning', href: '/', icon: TruckIcon },
-    { name: 'Report', href: '#', icon: DocumentTextIcon },
+    { name: 'Add Product', href: '/dashboard/add-product', icon: PlusIcon },
+    { name: 'Market Insight', href: '/dashboard/market-insight', icon: ChartBarIcon },
+    { name: 'Price Strategy', href: '/dashboard/price-strategy', icon: CurrencyRupeeIcon },
+    { name: 'Marketing & Branding', href: '/dashboard/market-branding', icon: GiftIcon },
+    { name: 'Logistic Planning', href: '/dashboard/logistic-planning', icon: TruckIcon },
+    { name: 'Report', href: '/dashboard/report', icon: DocumentTextIcon },
     { name: 'Logout', href: '#', icon: PowerIcon },
   ];
 
-  const getTitlefromPath = (path) => {
-    if (!path || typeof path !== 'string' || !path.includes('/')) return '';
-    const segments = path.split('/');
-    const last_segment = segments[segments.length - 1];
-    if (last_segment) {
-      return last_segment.charAt(0).toUpperCase() + last_segment.slice(1).toLowerCase();
-    }
-    return '';
-  };
+  const getTitlefromPath = (path) => navigation.filter((ele) => ele.href == path)[0]["name"];
 
   // logout logic
   const handleLogout = async () => {
@@ -109,7 +101,7 @@ const Dashboard = () => {
 
         <div className="md:ml-64">
           <DashboardHeader title={getTitlefromPath(location.pathname)} />
-          <main className="p-6 max-w-7xl mx-auto">
+          <main className="p-6 max-w-7xl mx-auto h-screen">
             <Outlet />
           </main>
         </div>
