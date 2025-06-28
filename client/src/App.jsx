@@ -10,6 +10,11 @@ import MainLayout from './components/MainLayout';
 import AddProductForm from './components/AddProductForm';
 import ProductTable from './components/ProductTable';
 import { DashboardProvider } from './context/DashboardContext';
+import Overview from './components/Overview';
+import PriceStrategy from './components/PriceStrategy';
+import MarketBranding from './components/MarketBranding';
+import LogisticPlanning from './components/LogisticPlanning';
+import Report from './components/Report';
 
 function App() {
   return (
@@ -32,11 +37,20 @@ function App() {
           >
             <Route index element={
               <>
+                <Overview />
+              </>
+            } />
+            <Route path="add-product" element={
+              <>
                 <AddProductForm />
                 <ProductTable />
               </>
             } />
-            <Route path="analysis" element={<AnalyticsDashboard />} />
+            <Route path="market-insight" element={<AnalyticsDashboard />} />
+            <Route path="price-strategy" element={<PriceStrategy />} />
+            <Route path="logistic-planning" element={<LogisticPlanning />} />
+            <Route path="market-branding" element={<MarketBranding />} />
+            <Route path="report" element={<Report />} />
           </Route>
         </Routes>
       </DashboardProvider>
