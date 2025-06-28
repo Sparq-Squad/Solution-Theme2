@@ -6,7 +6,7 @@ function ProtectedRoute({ children }) {
   const [isAuth, setIsAuth] = useState(null);
   console.log("Protected Route");
   useEffect(() => {
-    fetch('http://localhost:5000/user/verify', {
+    fetch(`${import.meta.env.VITE_BACKEND_URL}/user/verify`, {
       method: 'GET',
       credentials: 'include'
     })
