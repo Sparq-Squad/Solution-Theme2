@@ -101,7 +101,7 @@ const Dashboard = () => {
 
         <div className="md:ml-64">
           <DashboardHeader title={getTitlefromPath(location.pathname)} />
-          <main className="p-6 max-w-7xl mx-auto h-screen">
+          <main className="p-6 max-w-7xl mx-auto min-h-screen">
             <Outlet />
           </main>
         </div>
