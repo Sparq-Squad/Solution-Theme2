@@ -2,14 +2,15 @@ import { useState } from 'react';
 import { useNavigate, useLocation, Link, Outlet } from 'react-router-dom';
 import axios from 'axios';
 
-
 import {
-  HomeIcon,
+  Squares2X2Icon,
   ChartBarIcon,
-  CogIcon,
-  UserGroupIcon,
-  QueueListIcon,
+  PlusIcon,
   PowerIcon,
+  DocumentTextIcon,
+  TruckIcon,
+  GiftIcon,
+  CurrencyRupeeIcon,
 } from '@heroicons/react/24/outline';
 
 import DashboardHeader from '../components/DashboardHeader';
@@ -21,12 +22,14 @@ const Dashboard = () => {
   const navigate = useNavigate();
 
   const navigation = [
-    { name: 'Dashboard', href: '/dashboard', icon: HomeIcon },
-    { name: 'Analytics', href: '/dashboard/analysis', icon: ChartBarIcon },
-    { name: 'Products', href: '#', icon: QueueListIcon },
-    { name: 'Audience', href: '#', icon: UserGroupIcon },
-    { name: 'Settings', href: '#', icon: CogIcon },
-    { name: 'Logout', href: '/', icon: PowerIcon },
+    { name: 'Overview', href: '/dashboard', icon: Squares2X2Icon },
+    { name: 'Add Product', href: '/dashboard/analysis', icon: PlusIcon },
+    { name: 'Market Insight', href: '#', icon: ChartBarIcon },
+    { name: 'Price Strategy', href: '#', icon: CurrencyRupeeIcon },
+    { name: 'Marketing & Branding', href: '#', icon: GiftIcon },
+    { name: 'Logistic Planning', href: '/', icon: TruckIcon },
+    { name: 'Report', href: '#', icon: DocumentTextIcon },
+    { name: 'Logout', href: '#', icon: PowerIcon },
   ];
 
   const getTitlefromPath = (path) => {
