@@ -1,5 +1,5 @@
-const { setUser, getUser } = require('../service/auth.js');
-const User = require('../models/user.js');
+const { setUser, getUser } = require("../service/auth.js");
+const User = require("../models/user.js");
 
 async function handleUserSignup(req, res) {
   const { name, email, password } = req.body;
@@ -29,10 +29,10 @@ async function handleUserLogin(req, res) {
 
     const token = setUser(user);
     res.cookie("UID", token, {
-      httpOnly: true, // secure cookie
-      secure: false, // Set to true in production with HTTPS
+      httpOnly: true,
+      secure: process.env.NODE_ENV == "production",
       path: "/",
-      sameSite: "Lax",
+      sameSite: process.env.NODE_ENV == "production" ? "None" : "Lax",
     });
 
     return res.status(200).json({ message: "Login successful", user, token });
