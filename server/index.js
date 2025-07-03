@@ -39,6 +39,7 @@ app.use(express.json());
 app.use("/", staticRoute);
 app.use("/user", userRoute);
 app.use("/dashboard", restrictToLoggedinUserOnly);
+app.use("/product", require("./routes/product.js"));
 
 app.listen(PORT, () => {
   console.log(`server is running on port ${PORT}`);
