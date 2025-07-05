@@ -16,7 +16,6 @@ import {
 const AnalyticsDashboard = () => {
   const [selectedProduct, setSelectedProduct] = useState('tv-products');
 
-  // TV product data
   const tvProductsData = [
     {
       brand: "Foxsky",
@@ -280,20 +279,20 @@ const AnalyticsDashboard = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <div className="min-h-screen p-6">
       <div className="max-w-7xl mx-auto space-y-6">
         {/* Header */}
-        <div className="bg-white rounded-lg shadow-sm border p-6">
+        <div className="bg-gray-800 rounded-lg shadow-sm  border border-gray-700 p-6">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">Seller Analytics Dashboard</h1>
+              <h1 className="text-2xl font-bold">Seller Analytics Dashboard</h1>
               <p className="text-gray-600 mt-1">Comprehensive market analysis and forecasting</p>
             </div>
             <div className="w-full md:w-auto">
               <select 
                 value={selectedProduct} 
                 onChange={(e) => setSelectedProduct(e.target.value)}
-                className="w-full md:w-64 h-10 border border-gray-300 rounded-md bg-white px-3 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full md:w-64 h-10 border border-gray-300 rounded-md px-3 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 <option value="tv-products">32" Smart TVs</option>
                 <option value="wireless-headphones">Wireless Headphones</option>
@@ -306,10 +305,10 @@ const AnalyticsDashboard = () => {
         </div>
 
         {/* TV Price Comparison Bar Chart */}
-        <div className="p-6 bg-white border border-gray-200 rounded-lg shadow-sm">
+        <div className="p-6 bg-gray-800 border border-gray-700 rounded-lg shadow-sm">
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-6 gap-2">
             <div>
-              <h3 className="text-lg font-semibold text-gray-900">32" Smart TV Price Comparison</h3>
+              <h3 className="text-lg font-semibold">32" Smart TV Price Comparison</h3>
               <p className="text-sm text-gray-600">Current market prices across major brands</p>
             </div>
             <div className="flex items-center gap-4 text-sm">
@@ -323,6 +322,7 @@ const AnalyticsDashboard = () => {
               </div>
             </div>
           </div>
+
           <ResponsiveContainer width="100%" height={400}>
             <BarChart data={tvProductsData} margin={{ top: 20, right: 30, left: 20, bottom: 60 }}>
               <CartesianGrid strokeDasharray="3 3" className="opacity-30" />
@@ -364,19 +364,19 @@ const AnalyticsDashboard = () => {
           </div>
         </div>
 
-        <div className="p-6 bg-white border border-gray-200 rounded-lg shadow-sm">
+        <div className="p-6 border border-gray-700 rounded-lg shadow-sm">
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-6 gap-2">
-            <h3 className="text-lg font-semibold text-gray-900">Competitive Products</h3>
+            <h3 className="text-lg font-semibold">Competitive Products</h3>
             <span className="bg-blue-50 text-blue-700 border border-blue-200 px-3 py-1 rounded-full text-sm">
               {competitiveProducts.length} Competitors Found
             </span>
           </div>
           <div className="space-y-4">
             {competitiveProducts.map((product) => (
-              <div key={product.id} className="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 transition-colors">
+              <div key={product.id} className="border border-gray-700 rounded-lg p-4 hover:bg-gray-50/10 transition-colors">
                 <div className="flex flex-col md:flex-row items-start justify-between gap-4">
                   <div className="flex-1">
-                    <h4 className="font-medium text-gray-900">{product.name}</h4>
+                    <h4 className="font-medium">{product.name}</h4>
                     <p className="text-sm text-gray-600">{product.brand}</p>
                     <div className="flex items-center mt-2 text-sm text-gray-600">
                       <span className="flex items-center">
@@ -388,7 +388,7 @@ const AnalyticsDashboard = () => {
                   </div>
                   <div className="text-right">
                     <div className="flex flex-col md:flex-row md:items-center gap-2 mb-2">
-                      <span className="text-lg font-bold text-gray-900">${product.price}</span>
+                      <span className="text-lg font-bold">${product.price}</span>
                       <span className={`px-2 py-1 rounded-full text-xs ${getPositionBadge(product.marketPosition)}`}>
                         {product.marketPosition}
                       </span>
@@ -487,8 +487,8 @@ const AnalyticsDashboard = () => {
         </div>
 
         {/* Action Items */}
-        <div className="p-6 bg-white border border-gray-200 rounded-lg shadow-sm">
-          <h3 className="text-lg font-semibold text-gray-900 mb-6">Recommended Actions</h3>
+        <div className="p-6 bg-gray-800 border border-gray-700 rounded-lg shadow-sm">
+          <h3 className="text-lg font-semibold mb-6">Recommended Actions</h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
               <div className="flex items-center mb-3">
