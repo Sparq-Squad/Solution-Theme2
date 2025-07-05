@@ -65,7 +65,7 @@ const handleSubmit = async (e) => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-300 via-white to-purple-300 px-4 sm:px-6 lg:px-8"
+      className="min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8"
     >
       <motion.div
         initial={{ y: 50, opacity: 0 }}
