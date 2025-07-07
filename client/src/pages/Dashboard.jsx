@@ -30,9 +30,6 @@ const Dashboard = () => {
     { name: 'Logout', href: '#', icon: PowerIcon },
   ];
 
-  const getTitleFromPath = (path) =>
-    navigation.find((item) => item.href === path)?.name || 'Dashboard';
-
   const handleLogout = async () => {
     try {
       await axios.post(`${import.meta.env.VITE_BACKEND_URL}/user/logout`, {}, { withCredentials: true });
@@ -45,25 +42,25 @@ const Dashboard = () => {
 
   return (
     <DashboardProvider>
-      <div className="min-h-screen bg-gray-900 text-white">
+      <div className="min-h-screen bg-gradient-to-b from-[#0f1117] to-[#1a1d27] text-yellow-200">
         {/* Mobile Menu Button */}
         <button
           onClick={() => setSidebarOpen(true)}
-          className="md:hidden fixed top-4 left-4 z-50 p-2 rounded-md bg-gray-800 text-gray-300 shadow-lg"
+          className="md:hidden fixed top-4 left-4 z-50 p-2 rounded-md bg-[#161a23] text-yellow-300 shadow-lg"
         >
-          <span className="h-6 w-6">☰</span>
+          <span className="text-xl">☰</span>
         </button>
 
         {/* Sidebar */}
-        <div
-          className={`fixed inset-y-0 left-0 z-40 w-64 bg-gray-800 shadow-xl transform ${
+        <aside
+          className={`fixed inset-y-0 left-0 z-40 w-64 bg-[#121929] border-r border-gray-700 shadow-xl transform ${
             sidebarOpen ? 'translate-x-0' : '-translate-x-full'
           } md:translate-x-0 transition-transform duration-200 ease-in-out`}
         >
           <div className="flex items-center justify-between px-6 py-5 border-b border-gray-700">
             <h1 className="text-xl font-bold text-yellow-400">AI Business Analyst</h1>
-            <button onClick={() => setSidebarOpen(false)} className="md:hidden text-gray-400 hover:text-white">
-              <span className="h-6 w-6">×</span>
+            <button onClick={() => setSidebarOpen(false)} className="md:hidden text-gray-400 hover:text-yellow-300 text-2xl">
+              ×
             </button>
           </div>
 
@@ -73,7 +70,7 @@ const Dashboard = () => {
                 <button
                   key={item.name}
                   onClick={handleLogout}
-                  className="w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-300 hover:bg-red-900/30 hover:text-red-300 transition-all"
+                  className="w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-red-300 hover:bg-red-900/30 hover:text-red-200 transition-all"
                 >
                   <item.icon className="h-5 w-5" />
                   <span>{item.name}</span>
@@ -82,8 +79,10 @@ const Dashboard = () => {
                 <Link
                   key={item.name}
                   to={item.href}
-                  className={`flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-300 hover:bg-yellow-900/30 hover:text-yellow-300 transition-all ${
-                    location.pathname === item.href ? 'bg-yellow-900/40 text-yellow-300' : ''
+                  className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 ${
+                    location.pathname === item.href
+                      ? 'bg-yellow-900/40 text-yellow-300 border border-yellow-400'
+                      : 'text-gray-400 hover:bg-yellow-900/20 hover:text-yellow-200 hover:border-yellow-500 border border-transparent'
                   }`}
                 >
                   <item.icon className="h-5 w-5" />
@@ -92,22 +91,20 @@ const Dashboard = () => {
               )
             )}
           </nav>
-        </div>
+        </aside>
 
         {/* Mobile Overlay */}
         {sidebarOpen && (
           <div
             onClick={() => setSidebarOpen(false)}
             className="md:hidden fixed inset-0 z-30 bg-black bg-opacity-50"
-          ></div>
+          />
         )}
 
         {/* Main Content */}
-        <div className="md:ml-64 min-h-screen">
-          <main className="p-6 max-w-7xl mx-auto min-h-screen">
-            <Outlet />
-          </main>
-        </div>
+        <main className="md:ml-64 px-4 py-6 max-w-7xl mx-auto min-h-screen">
+          <Outlet />
+        </main>
       </div>
     </DashboardProvider>
   );

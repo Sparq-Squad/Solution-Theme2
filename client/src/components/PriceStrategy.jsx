@@ -51,148 +51,126 @@ const PriceStrategy = () => {
   }));
 
   return (
-    <div className="p-6 bg-gradient-to-b from-gray-900 to-gray-800 text-white min-h-screen">
-      <div className="max-w-7xl mx-auto">
+<div className="p-6 bg-gradient-to-b from-[#0b0c10] via-[#111217] to-[#1a1a1a] text-white min-h-screen">
+  <div className="max-w-7xl mx-auto">
 
-        {/* Header */}
-        <div className="mb-10 text-center">
-          <h1 className="text-4xl font-bold text-gold-400">Pricing Strategy Dashboard</h1>
-          <p className="text-gray-300 mt-2 text-lg">
-            Strategic insights and competitive positioning for business growth.
-          </p>
-        </div>
-
-        {/* Current Price vs Competitors */}
-        <section className="bg-gray-800 p-6 rounded-lg shadow-xl mb-8 transform transition duration-300 hover:shadow-2xl">
-          <h2 className="text-xl font-semibold mb-4 border-b border-gray-600 pb-2">Current Market Prices</h2>
-          <div style={{ height: 300 }}>
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={allProducts}>
-                <CartesianGrid stroke="#374151" strokeDasharray="5 5" />
-                <XAxis
-                  dataKey="brand"
-                  interval={0}
-                  tick={{ fontSize: 12, fill: '#d1d5db' }}
-                />
-                <YAxis tick={{ fill: '#d1d5db' }} />
-                <Tooltip
-                  formatter={(value) => [`₹${value}`, "Price"]}
-                  contentStyle={{
-                    backgroundColor: '#1f2937',
-                    borderColor: '#374151',
-                  }}
-                />
-                <Bar
-                  dataKey="current_price"
-                  name="Current Price (₹)"
-                  radius={[4, 4, 0, 0]}
-                >
-                  {allProducts.map((entry) => (
-                    <Cell
-                      key={`cell-${entry.id}`}
-                      fill={entry.id === myProduct.id ? '#facc15' : '#ffff002f'}
-                    />
-                  ))}
-                </Bar>
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </section>
-
-        {/* Price Range Comparison */}
-        <section className="bg-gray-800 p-6 rounded-lg shadow-xl mb-8 transform transition duration-300 hover:shadow-2xl">
-          <h2 className="text-xl font-semibold mb-4 border-b border-gray-600 pb-2">Historical Price Ranges</h2>
-          <div style={{ height: 300 }}>
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={priceRangeData}>
-                <CartesianGrid stroke="#374151" strokeDasharray="5 5" />
-                <XAxis dataKey="name" tick={{ fill: '#d1d5db' }} />
-                <YAxis tick={{ fill: '#d1d5db' }} />
-                <Tooltip formatter={(value, name) => [`₹${value}`, name]} contentStyle={{ backgroundColor: '#1f2937', borderColor: '#374151' }} />
-                <Legend wrapperStyle={{ color: '#d1d5db' }} />
-                <Line type="monotone" dataKey="min" stroke="#10B981" name="Min Price" strokeWidth={2} dot={{ r: 4 }} />
-                <Line type="monotone" dataKey="max" stroke="#EF4444" name="Max Price" strokeWidth={2} dot={{ r: 4 }} />
-              </LineChart>
-            </ResponsiveContainer>
-          </div>
-        </section>
-
-        {/* Feature Comparison Table */}
-        <section className="bg-gray-800 p-6 rounded-lg shadow-xl mb-8 transform transition duration-300 hover:shadow-2xl">
-          <h2 className="text-xl font-semibold mb-4 border-b border-gray-600 pb-2">Feature Comparison</h2>
-          <div className="overflow-x-auto">
-            <table className="min-w-full table-auto border-collapse">
-              <thead className="bg-gray-700">
-                <tr>
-                  <th className="px-4 py-3 text-left text-sm uppercase tracking-wide">Brand</th>
-                  <th className="px-4 py-3 text-left text-sm uppercase tracking-wide">HDMI</th>
-                  <th className="px-4 py-3 text-left text-sm uppercase tracking-wide">USB</th>
-                  <th className="px-4 py-3 text-left text-sm uppercase tracking-wide">OS</th>
-                  <th className="px-4 py-3 text-left text-sm uppercase tracking-wide">Price (₹)</th>
-                </tr>
-              </thead>
-              <tbody>
-                {specComparison.map((item, index) => (
-                  <tr
-                    key={index}
-                    className={`border-b border-gray-700 hover:bg-gray-700/50 ${item.brand.includes("Sonu") ? 'bg-yellow-900/20 font-medium' : ''}`}
-                  >
-                    <td className="px-4 py-3">{item.brand}</td>
-                    <td className="px-4 py-3">{item.hdmi}</td>
-                    <td className="px-4 py-3">{item.usb}</td>
-                    <td className="px-4 py-3">{item.os}</td>
-                    <td className="px-4 py-3">
-                      {item.brand.includes("Sonu") ? (
-                        <span className="font-semibold text-yellow-400">₹{item.price}</span>
-                      ) : (
-                        `₹${item.price}`
-                      )}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </section>
-
-        {/* Strategic Insights */}
-        <section className="bg-gray-800 p-6 rounded-lg shadow-xl mb-8 transform transition duration-300 hover:shadow-2xl">
-          <h2 className="text-xl font-semibold mb-4 border-b border-gray-600 pb-2">Strategic Insights</h2>
-          <ul className="space-y-3 text-gray-300 list-disc pl-5">
-            <li><strong>Your TV is priced at ₹8499</strong> — competitively in the mid-range segment.</li>
-            <li>You offer more USB ports than many but only one HDMI port — this may affect multimedia users. Consider upgrading this feature for a premium edge.</li>
-            <li>Running on Linux OS like Infinix & Thomson, but priced similarly to Android-based TVs – a strong value play if performance is comparable.</li>
-            <li>You have a wide price flexibility (₹6999–₹9999), which opens opportunities for seasonal promotions or bundling accessories.</li>
-            <li>Competitors like iFFALCON are holding firm at ₹8999+, indicating that users are willing to pay a premium in this category.</li>
-          </ul>
-        </section>
-
-        {/* Recommended Strategies */}
-        <section className="bg-gray-800 p-6 rounded-lg shadow-xl mb-8 transform transition duration-300 hover:shadow-2xl">
-          <h2 className="text-xl font-semibold mb-4 border-b border-gray-600 pb-2">Recommended Pricing Strategy</h2>
-          <ul className="space-y-3 text-gray-300 list-disc pl-5">
-            <li><strong>Promotional Pricing:</strong> Offer a limited-time discount down to ₹6999 during festive seasons to boost visibility and volume sales.</li>
-            <li><strong>Premium Bundling:</strong> Bundle with soundbar or wall mount at ₹9499 to match top-tier competitors without raising base price.</li>
-            <li><strong>Value Messaging:</strong> Emphasize Linux stability and security in marketing — differentiate from Android models.</li>
-            <li><strong>Penetration Pricing:</strong> Temporarily reduce to ₹7999 to capture market share from Foxsky and MarQ.</li>
-          </ul>
-        </section>
-
-        {/* Summary Box */}
-        <section className="bg-gray-800 p-6 rounded-lg shadow-xl mb-8 transform transition duration-300 hover:shadow-2xl">
-          <h2 className="text-xl font-semibold mb-4 border-b border-gray-600 pb-2">Summary</h2>
-          <p className="text-gray-300 mb-3">
-            Your Smart TV sits well in the mid-market range with decent features. You can either:
-          </p>
-          <ul className="space-y-2 text-gray-300 list-disc pl-5">
-            <li><strong>Go Aggressive</strong> and undercut competitors to gain quick traction.</li>
-            <li><strong>Position as Premium</strong> by improving HDMI ports and adding branding around quality/performance.</li>
-            <li><strong>Or Maintain Mid-Range</strong> and focus on consistent sales via loyalty programs and cross-selling.</li>
-          </ul>
-        </section>
-
-      </div>
+    {/* Header */}
+    <div className="mb-10 text-center">
+      <h1 className="text-4xl font-bold text-yellow-400">Pricing Strategy Dashboard</h1>
+      <p className="text-gray-400 mt-2 text-lg">Strategic insights and competitive positioning for business growth.</p>
     </div>
+
+    {/* Section Template */}
+    <section className="bg-gradient-to-b from-[#0b0c10] via-[#111217] to-[#1a1a1a] p-6 rounded-xl border border-[#2c2f38] shadow-lg mb-8 hover:shadow-yellow-900/30 transition duration-300">
+
+      <h2 className="text-xl font-semibold text-yellow-300 mb-4 border-b border-gray-600 pb-2">Current Market Prices</h2>
+
+      <div className="h-72">
+        <ResponsiveContainer width="100%" height="100%">
+          <BarChart data={allProducts}>
+            <CartesianGrid stroke="#2c2f38" strokeDasharray="5 5" />
+            <XAxis dataKey="brand" tick={{ fontSize: 12, fill: '#facc15' }} />
+            <YAxis tick={{ fill: '#facc15' }} />
+            <Tooltip contentStyle={{ backgroundColor: '#1f2937', borderColor: '#2c2f38' }} formatter={(value) => [`₹${value}`, "Price"]} />
+            <Bar dataKey="current_price" name="Current Price (₹)" radius={[4, 4, 0, 0]}>
+              {allProducts.map((entry) => (
+                <Cell
+                  key={`cell-${entry.id}`}
+                  fill={entry.id === myProduct.id ? '#facc15' : '#facc1544'}
+                />
+              ))}
+            </Bar>
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+    </section>
+
+    {/* Historical Price Ranges */}
+    <section className="bg-gradient-to-b from-[#0b0c10] via-[#111217] to-[#1a1a1a] p-6 rounded-xl border border-[#2c2f38] shadow-lg mb-8 hover:shadow-yellow-900/30 transition duration-300">
+      <h2 className="text-xl font-semibold text-yellow-300 mb-4 border-b border-gray-600 pb-2">Historical Price Ranges</h2>
+      <div className="h-72">
+        <ResponsiveContainer width="100%" height="100%">
+          <LineChart data={priceRangeData}>
+            <CartesianGrid stroke="#2c2f38" strokeDasharray="5 5" />
+            <XAxis dataKey="name" tick={{ fill: '#facc15' }} />
+            <YAxis tick={{ fill: '#facc15' }} />
+            <Tooltip contentStyle={{ backgroundColor: '#1f2937', borderColor: '#2c2f38' }} formatter={(value, name) => [`₹${value}`, name]} />
+            <Legend wrapperStyle={{ color: '#facc15' }} />
+            <Line type="monotone" dataKey="min" stroke="#10B981" strokeWidth={2} name="Min Price" dot={{ r: 4 }} />
+            <Line type="monotone" dataKey="max" stroke="#EF4444" strokeWidth={2} name="Max Price" dot={{ r: 4 }} />
+          </LineChart>
+        </ResponsiveContainer>
+      </div>
+    </section>
+
+    {/* Feature Table */}
+    <section className="bg-gradient-to-b from-[#0b0c10] via-[#111217] to-[#1a1a1a] p-6 rounded-xl border border-[#2c2f38] shadow-lg mb-8 hover:shadow-yellow-900/30 transition duration-300">
+      <h2 className="text-xl font-semibold text-yellow-300 mb-4 border-b border-gray-600 pb-2">Feature Comparison</h2>
+      <div className="overflow-x-auto">
+        <table className="min-w-full border-collapse text-sm">
+          <thead className="bg-[#23272F] text-yellow-200">
+            <tr>
+              <th className="px-4 py-3 text-left">Brand</th>
+              <th className="px-4 py-3 text-left">HDMI</th>
+              <th className="px-4 py-3 text-left">USB</th>
+              <th className="px-4 py-3 text-left">OS</th>
+              <th className="px-4 py-3 text-left">Price (₹)</th>
+            </tr>
+          </thead>
+          <tbody>
+            {specComparison.map((item, index) => (
+              <tr
+                key={index}
+                className={`border-b border-[#2c2f38] hover:bg-[#1e222d] transition ${item.brand.includes("Sonu") ? 'bg-yellow-900/10 font-medium' : ''}`}
+              >
+                <td className="px-4 py-3 text-yellow-100">{item.brand}</td>
+                <td className="px-4 py-3">{item.hdmi}</td>
+                <td className="px-4 py-3">{item.usb}</td>
+                <td className="px-4 py-3">{item.os}</td>
+                <td className="px-4 py-3 text-yellow-300 font-semibold">₹{item.price}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    {/* Strategic Insights */}
+    <section className="bg-gradient-to-b from-[#0b0c10] via-[#111217] to-[#1a1a1a] p-6 rounded-xl border border-[#2c2f38] shadow-lg mb-8 hover:shadow-yellow-900/30 transition duration-300">
+      <h2 className="text-xl font-semibold text-yellow-300 mb-4 border-b border-gray-600 pb-2">Strategic Insights</h2>
+      <ul className="space-y-3 text-yellow-100 list-disc pl-5 text-sm sm:text-base leading-relaxed">
+        <li><strong className="text-yellow-400">Your TV is priced at ₹8499</strong> — competitively in the mid-range segment.</li>
+        <li>You offer more USB ports than many but only one HDMI port — consider upgrading for multimedia users.</li>
+        <li>Running Linux like Infinix & Thomson, but priced close to Android models — value play.</li>
+        <li>Wide price range (₹6999–₹9999) — leverage in festive deals or accessory bundling.</li>
+        <li>iFFALCON stays above ₹8999 — signals premium user intent in this segment.</li>
+      </ul>
+    </section>
+
+    {/* Recommendations */}
+    <section className="bg-gradient-to-b from-[#0b0c10] via-[#111217] to-[#1a1a1a] p-6 rounded-xl border border-[#2c2f38] shadow-lg mb-8 hover:shadow-yellow-900/30 transition duration-300">
+      <h2 className="text-xl font-semibold text-yellow-300 mb-4 border-b border-gray-600 pb-2">Recommended Strategy</h2>
+      <ul className="space-y-3 text-yellow-100 list-disc pl-5 text-sm sm:text-base leading-relaxed">
+        <li><strong className="text-yellow-400">Promo Pricing:</strong> Drop to ₹6999 during festive to boost volume.</li>
+        <li><strong className="text-yellow-400">Bundle Smartly:</strong> Pair with accessories at ₹9499 to stay premium.</li>
+        <li><strong className="text-yellow-400">Value Focus:</strong> Market Linux as secure + reliable alternative.</li>
+        <li><strong className="text-yellow-400">Grab Market:</strong> ₹7999 penetration to beat MarQ/Foxsky.</li>
+      </ul>
+    </section>
+
+    {/* Summary */}
+    <section className="bg-gradient-to-b from-[#0b0c10] via-[#111217] to-[#1a1a1a] p-6 rounded-xl border border-[#2c2f38] shadow-lg mb-8 hover:shadow-yellow-900/30 transition duration-300">
+      <h2 className="text-xl font-semibold text-yellow-300 mb-4 border-b border-gray-600 pb-2">Summary</h2>
+      <p className="text-yellow-100 mb-3">Your Smart TV sits well in the mid-market with scope to:</p>
+      <ul className="space-y-2 text-yellow-100 list-disc pl-5 text-sm sm:text-base">
+        <li><strong className="text-yellow-400">Undercut rivals</strong> for market share.</li>
+        <li><strong className="text-yellow-400">Go Premium</strong> via feature upgrades.</li>
+        <li><strong className="text-yellow-400">Stay Consistent</strong> via loyalty/cross-sales.</li>
+      </ul>
+    </section>
+
+  </div>
+</div>
   );
 };
 

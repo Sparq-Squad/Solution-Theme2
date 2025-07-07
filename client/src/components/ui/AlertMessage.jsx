@@ -7,8 +7,8 @@ function AlertMessage({ message, type = 'error', onClose }) {
   useEffect(() => {
     const hideTimer = setTimeout(() => {
       setVisible(false);
-      setTimeout(onClose, 200); // Matches the fade-out duration
-    }, 2000);
+      setTimeout(onClose, 100); // Matches the fade-out duration
+    }, 500);
 
     return () => clearTimeout(hideTimer);
   }, [onClose]);

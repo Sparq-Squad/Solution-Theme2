@@ -125,9 +125,9 @@ const LocationMap = ({
       {/* Jamshedpur (Home Base) */}
       <div className="absolute top-1/2 left-1/3 transform -translate-x-1/2 -translate-y-1/2 z-10">
         <div className="relative">
-          <div className="w-4 h-4 bg-primary rounded-full animate-pulse shadow-lg shadow-primary/50 border-2 border-white"></div>
+          <div className="w-4 h-4 bg-amber-500 rounded-full animate-pulse shadow-lg shadow-primary/50 border-3 border-white"></div>
           <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 whitespace-nowrap">
-            <span className="text-xs bg-primary text-white px-2 py-1 rounded font-semibold shadow-lg">
+            <span className="text-xs semibold bg-green-500 text-gray-700 px-2 py-1 rounded font-semibold shadow-lg">
               Jamshedpur (Base)
             </span>
           </div>
@@ -162,14 +162,14 @@ const LocationMap = ({
                 >
                   <div className={`w-3 h-3 rounded-full shadow-lg border-2 border-white ${
                     selectedStore?.id === store.id 
-                      ? 'bg-accent shadow-accent/50 animate-bounce' 
+                      ? 'bg-yellow-800 shadow-accent/50 animate-bounce' 
                       : 'bg-green-500 shadow-green-500/50'
                   }`}></div>
                   <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 whitespace-nowrap z-10">
                     <span className={`text-xs px-2 py-1 rounded font-medium shadow-lg ${
                       selectedStore?.id === store.id
-                        ? 'bg-accent text-white'
-                        : 'bg-green-500 text-white'
+                        ? 'bg-gray-800 text-amber-400'
+                        : 'bg-green-500 text-gray-700'
                     }`}>
                       {store.name}
                     </span>
@@ -181,52 +181,61 @@ const LocationMap = ({
         </>
       )}
 
-      {/* Legend */}
-      <div className="absolute bottom-4 left-4 bg-white/95 backdrop-blur-sm rounded-lg p-3 space-y-2 border border-gray-200 shadow-lg z-10">
-        <div className="flex items-center gap-2">
-          <div className="w-3 h-3 bg-primary rounded-full border border-white"></div>
-          <span className="text-xs text-gray-700">Jamshedpur (Base)</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <div className="w-3 h-3 bg-green-500 rounded-full border border-white"></div>
-          <span className="text-xs text-gray-700">Available Stores</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <div className="w-3 h-3 bg-accent rounded-full border border-white"></div>
-          <span className="text-xs text-gray-700">Selected Store</span>
-        </div>
+{/* Legend */}
+<div className="absolute bottom-4 left-4 bg-[#1f1f1f]/90 backdrop-blur-sm rounded-lg p-3 space-y-2 border border-[#3c3c3c] shadow-lg z-10">
+  <div className="flex items-center gap-2">
+    <div className="w-3 h-3 bg-yellow-400 rounded-full border border-white"></div>
+    <span className="text-xs text-yellow-200">Jamshedpur (Base)</span>
+  </div>
+  <div className="flex items-center gap-2">
+    <div className="w-3 h-3 bg-green-500 rounded-full border border-white"></div>
+    <span className="text-xs text-yellow-200">Available Stores</span>
+  </div>
+  <div className="flex items-center gap-2">
+    <div className="w-3 h-3 bg-yellow-500 rounded-full border border-white animate-pulse"></div>
+    <span className="text-xs text-yellow-200">Selected Store</span>
+  </div>
+</div>
+
+
+{/* Location Info */}
+{selectedLocation && (
+  <div className="absolute top-4 right-4 bg-[#1f1f1f]/90 backdrop-blur-sm rounded-lg p-3 border border-[#3c3c3c] shadow-lg z-10">
+    <div className="flex items-center gap-2">
+      <MapPinIcon />
+      <span className="text-sm font-medium text-yellow-200">
+        {locations.find(loc => loc.id === selectedLocation)?.name}
+      </span>
+    </div>
+    <div className="text-xs text-yellow-400 mt-1">
+      {stores.length} stores available
+    </div>
+  </div>
+)}
+
+
+{/* No Location Selected */}
+{!selectedLocation && (
+  <div className="absolute inset-0 flex items-center justify-center z-10">
+    <div className="text-center text-yellow-400 bg-[#1f1f1f]/90 backdrop-blur-sm rounded-lg p-6 border border-[#3c3c3c] shadow-lg">
+      <div className="mx-auto mb-4 w-12 h-12 bg-[#2a2a2a] rounded-full flex items-center justify-center">
+        <svg
+          className="w-6 h-6 text-yellow-300"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+        >
+          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+          <circle cx="12" cy="10" r="3" />
+        </svg>
       </div>
+      <p className="text-lg font-semibold text-yellow-200">Select a destination location</p>
+      <p className="text-sm text-yellow-500">to view available stores and routes</p>
+    </div>
+  </div>
+)}
 
-      {/* Location Info */}
-      {selectedLocation && (
-        <div className="absolute top-4 right-4 bg-white/95 backdrop-blur-sm rounded-lg p-3 border border-gray-200 shadow-lg z-10">
-          <div className="flex items-center gap-2">
-            <MapPinIcon />
-            <span className="text-sm font-medium text-gray-700">
-              {locations.find(loc => loc.id === selectedLocation)?.name}
-            </span>
-          </div>
-          <div className="text-xs text-gray-500 mt-1">
-            {stores.length} stores available
-          </div>
-        </div>
-      )}
-
-      {/* No Location Selected */}
-      {!selectedLocation && (
-        <div className="absolute inset-0 flex items-center justify-center z-10">
-          <div className="text-center text-gray-500 bg-white/90 backdrop-blur-sm rounded-lg p-6 border border-gray-200 shadow-lg">
-            <div className="mx-auto mb-4 w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center">
-              <svg className="w-6 h-6 text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-                <circle cx="12" cy="10" r="3" />
-              </svg>
-            </div>
-            <p className="text-lg font-medium">Select a destination location</p>
-            <p className="text-sm">to view available stores and routes</p>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
