@@ -435,7 +435,7 @@ export default function MarketingBranding() {
               {contentPerformance.map((content, index) => (
 <div
   key={index}
-  className="flex items-center justify-between p-4 rounded-lg bg-[#161a23] text-yellow-300 border border-gray-700 transition-all duration-300 hover:border-amber-500 hover:shadow-[0_0_10px_#f59e0b50]"
+  className="flex items-center justify-between p-4 rounded-lg  text-yellow-300 border bg-gradient-to-b from-[#0b0c10] via-[#111217] to-[#1a1a1a] border-gray-700 transition-all duration-300 hover:border-amber-500 hover:shadow-[0_0_10px_#f59e0b50]"
 >
   <div>
     <h3 className="font-semibold text-amber-400">{content.type}</h3>
