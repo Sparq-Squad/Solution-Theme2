@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import CustomDropdown from '../components/ui/CustomDropdown.jsx';
 import { 
   LineChart, 
   Line, 
@@ -208,37 +209,39 @@ const AnalyticsDashboard = () => {
     return variants[position] || 'bg-gray-100 text-gray-800';
   };
 
-  const CustomTooltip = ({ active, payload, label }) => {
-    if (active && payload && payload.length) {
-      const data = payload[0].payload;
-      return (
-        <div className="bg-white p-4 border border-gray-200 rounded-lg shadow-lg">
-          <p className="font-semibold text-gray-900">{data.brand}</p>
-          <p className="text-sm text-gray-600 mb-2">{data.model}</p>
-          <div className="space-y-1">
-            <p className="text-sm">
-              <span className="font-medium">Current Price:</span> ₹{data.current_price.toLocaleString()}
-            </p>
-            <p className="text-sm">
-              <span className="font-medium">Average Price:</span> ₹{data.average_price.toLocaleString()}
-            </p>
-            <p className="text-sm">
-              <span className="font-medium">OS:</span> {data.os}
-            </p>
-            <p className="text-sm">
-              <span className="font-medium">HDMI Ports:</span> {data.hdmi_ports}
-            </p>
-            {data.isOurProduct && (
-              <div className="mt-2 px-2 py-1 bg-green-100 text-green-800 rounded text-xs font-medium">
-                Our Product
-              </div>
-            )}
-          </div>
+const CustomTooltip = ({ active, payload, label }) => {
+  if (active && payload && payload.length) {
+    const data = payload[0].payload;
+    return (
+      <div className="bg-[#1f232e] border border-yellow-500 text-yellow-100 rounded-lg p-4 shadow-xl min-w-[220px]">
+        <p className="font-semibold text-yellow-300 text-base">{data.brand}</p>
+        <p className="text-sm text-gray-400 mb-2">{data.model}</p>
+        <div className="space-y-1 text-sm">
+          <p>
+            <span className="text-yellow-400 font-medium">Current Price:</span>{" "}
+            ₹{data.current_price.toLocaleString()}
+          </p>
+          <p>
+            <span className="text-yellow-400 font-medium">Average Price:</span>{" "}
+            ₹{data.average_price.toLocaleString()}
+          </p>
+          <p>
+            <span className="text-yellow-400 font-medium">OS:</span> {data.os}
+          </p>
+          <p>
+            <span className="text-yellow-400 font-medium">HDMI Ports:</span> {data.hdmi_ports}
+          </p>
+          {data.isOurProduct && (
+            <div className="mt-2 inline-block px-2 py-1 bg-green-700/20 border border-green-400 text-green-300 rounded text-xs font-medium">
+              Our Product
+            </div>
+          )}
         </div>
-      );
-    }
-    return null;
-  };
+      </div>
+    );
+  }
+  return null;
+};
 
   // SVG icons as React components
   const ArrowTrendingUpIcon = () => (
@@ -278,244 +281,163 @@ const AnalyticsDashboard = () => {
     </svg>
   );
 
-  return (
-    <div className="min-h-screen p-6">
-      <div className="max-w-7xl mx-auto space-y-6">
-        {/* Header */}
-        <div className="bg-gray-800 rounded-lg shadow-sm  border border-gray-700 p-6">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <div>
-              <h1 className="text-2xl font-bold">Seller Analytics Dashboard</h1>
-              <p className="text-gray-600 mt-1">Comprehensive market analysis and forecasting</p>
+
+return (
+  <div className="min-h-screen p-4 sm:p-6 bg-gradient-to-b from-[#0b0c10] via-[#111217] to-[#1a1a1a] text-[#f3f3f3]">
+    <div className="max-w-full md:max-w-7xl mx-auto space-y-6">
+
+      {/* Header */}
+      <div className="bg-gradient-to-b from-[#0b0c10] via-[#111217] to-[#1a1a1a] rounded-lg shadow-xl border border-[#2c2f38] p-4 sm:p-6">
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+          <div>
+            <h1 className="text-2xl font-bold text-yellow-400">Seller Analytics Dashboard</h1>
+            <p className="text-gray-400 mt-1 text-sm">Comprehensive market analysis and forecasting</p>
+          </div>
+<div className="w-full max-w-sm mx-auto px-4 sm:px-0">
+  <CustomDropdown selected={selectedProduct} setSelected={setSelectedProduct} />
+</div>
+
+
+        </div>
+      </div>
+
+      {/* Bar Chart */}
+      <div className="p-4 sm:p-6 bg-gradient-to-b from-[#0b0c10] via-[#111217] to-[#1a1a1a] border border-[#2c2f38] rounded-lg shadow-xl">
+        <div className="flex flex-col sm:flex-row justify-between gap-4 mb-6">
+          <div>
+            <h3 className="text-lg font-semibold text-yellow-400">32&quot; Smart TV Price Comparison</h3>
+            <p className="text-sm text-gray-400">Current market prices across major brands</p>
+          </div>
+          <div className="flex flex-wrap items-center gap-4 text-sm">
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 bg-yellow-400 rounded"></div>
+              <span className="text-gray-400">Our Product</span>
             </div>
-            <div className="w-full md:w-auto">
-              <select 
-                value={selectedProduct} 
-                onChange={(e) => setSelectedProduct(e.target.value)}
-                className="w-full md:w-64 h-10 border border-gray-300 rounded-md px-3 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              >
-                <option value="tv-products">32" Smart TVs</option>
-                <option value="wireless-headphones">Wireless Headphones</option>
-                <option value="bluetooth-speakers">Bluetooth Speakers</option>
-                <option value="smart-watches">Smart Watches</option>
-                <option value="phone-cases">Phone Cases</option>
-              </select>
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 bg-red-500 rounded"></div>
+              <span className="text-gray-400">Competitors</span>
             </div>
           </div>
         </div>
 
-        {/* TV Price Comparison Bar Chart */}
-        <div className="p-6 bg-gray-800 border border-gray-700 rounded-lg shadow-sm">
-          <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-6 gap-2">
-            <div>
-              <h3 className="text-lg font-semibold">32" Smart TV Price Comparison</h3>
-              <p className="text-sm text-gray-600">Current market prices across major brands</p>
-            </div>
-            <div className="flex items-center gap-4 text-sm">
-              <div className="flex items-center gap-2">
-                <div className="w-3 h-3 bg-green-500 rounded"></div>
-                <span className="text-gray-600">Our Product</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-3 h-3 bg-red-500 rounded"></div>
-                <span className="text-gray-600">Competitors</span>
-              </div>
-            </div>
-          </div>
-
-          <ResponsiveContainer width="100%" height={400}>
-            <BarChart data={tvProductsData} margin={{ top: 20, right: 30, left: 20, bottom: 60 }}>
-              <CartesianGrid strokeDasharray="3 3" className="opacity-30" />
-              <XAxis 
-                dataKey="brand" 
-                angle={-45}
-                textAnchor="end"
-                height={80}
-                fontSize={12}
-              />
-              <YAxis 
-                tickFormatter={(value) => `₹${(value/1000).toFixed(0)}K`}
-                fontSize={12}
-              />
-              <Tooltip content={<CustomTooltip />} />
-              <Bar 
-                dataKey="current_price" 
-                radius={[4, 4, 0, 0]}
-                name="Current Price"
-              >
-                {tvProductsData.map((entry, index) => (
-                  <Cell 
-                    key={`cell-${index}`} 
-                    fill={entry.isOurProduct ? '#10b981' : '#ef4444'} 
-                  />
-                ))}
-              </Bar>
-            </BarChart>
-          </ResponsiveContainer>
-          <div className="mt-4 p-4 bg-green-50 border border-green-200 rounded-lg">
-            <div className="flex items-center gap-2 mb-2">
-              <ArrowTrendingUpIcon />
-              <h4 className="font-medium text-green-900">Market Position Analysis</h4>
-            </div>
-            <p className="text-sm text-green-800">
-              Our Thomson 32" Smart TV is competitively priced at ₹8,999 with the best value proposition in the market. 
-              Consider the consistent pricing strategy (lowest = highest = ₹6,999) for better market penetration.
-            </p>
-          </div>
-        </div>
-
-        <div className="p-6 border border-gray-700 rounded-lg shadow-sm">
-          <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-6 gap-2">
-            <h3 className="text-lg font-semibold">Competitive Products</h3>
-            <span className="bg-blue-50 text-blue-700 border border-blue-200 px-3 py-1 rounded-full text-sm">
-              {competitiveProducts.length} Competitors Found
-            </span>
-          </div>
-          <div className="space-y-4">
-            {competitiveProducts.map((product) => (
-              <div key={product.id} className="border border-gray-700 rounded-lg p-4 hover:bg-gray-50/10 transition-colors">
-                <div className="flex flex-col md:flex-row items-start justify-between gap-4">
-                  <div className="flex-1">
-                    <h4 className="font-medium">{product.name}</h4>
-                    <p className="text-sm text-gray-600">{product.brand}</p>
-                    <div className="flex items-center mt-2 text-sm text-gray-600">
-                      <span className="flex items-center">
-                        ⭐ {product.rating} ({product.reviews} reviews)
-                      </span>
-                      <span className="mx-2 hidden md:inline">•</span>
-                      <span className="mt-1 md:mt-0">{product.availability}</span>
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    <div className="flex flex-col md:flex-row md:items-center gap-2 mb-2">
-                      <span className="text-lg font-bold">${product.price}</span>
-                      <span className={`px-2 py-1 rounded-full text-xs ${getPositionBadge(product.marketPosition)}`}>
-                        {product.marketPosition}
-                      </span>
-                    </div>
-                    <p className="text-sm text-gray-600">Your price: ${product.yourPrice}</p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-         
-        {/* Sales Forecast---> Can be used in different sections
-        <div className="p-6 bg-white border border-gray-200 rounded-lg shadow-sm">
-          <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-6 gap-2">
-            <div>
-              <h3 className="text-lg font-semibold text-gray-900">Sales Forecast & Performance</h3>
-              <p className="text-sm text-gray-600">Historical data vs projected sales for selected product</p>
-            </div>
-            <span className="bg-green-50 text-green-700 border border-green-200 px-3 py-1 rounded-full text-sm">
-              ↗ 23% Growth Projected
-            </span>
-          </div>
-          <ResponsiveContainer width="100%" height={400}>
-            <LineChart data={forecastData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="month" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Line 
-                type="monotone" 
-                dataKey="sales" 
-                stroke="#3b82f6" 
-                strokeWidth={3}
-                name="Actual Sales"
-                dot={{ fill: '#3b82f6', strokeWidth: 2 }}
-              />
-              <Line 
-                type="monotone" 
-                dataKey="forecast" 
-                stroke="#10b981" 
-                strokeWidth={3}
-                strokeDasharray="8 8"
-                name="Forecast"
-                dot={{ fill: '#10b981', strokeWidth: 2 }}
-              />
-            </LineChart>
-          </ResponsiveContainer>
-        </div> */}
-
-        {/* Market Trends & Revenue Analysis */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* <div className="p-6 bg-white border border-gray-200 rounded-lg shadow-sm">
-            <h3 className="text-lg font-semibold text-gray-900 mb-6">Market Growth Trends</h3>
-            <div className="space-y-4">
-              {marketTrends.map((trend, index) => (
-                <div key={index} className="flex items-center justify-between">
-                  <div className="flex items-center">
-                    <div 
-                      className="w-4 h-4 rounded-full mr-3"
-                      style={{ backgroundColor: trend.color }}
-                    ></div>
-                    <span className="font-medium text-gray-900">{trend.category}</span>
-                  </div>
-                  <div className="flex items-center">
-                    <span className="text-green-600 font-medium">+{trend.growth}%</span>
-                    <ArrowTrendingUpIcon />
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div> */}
-
-          {/* <div className="p-6 bg-white border border-gray-200 rounded-lg shadow-sm">
-            <h3 className="text-lg font-semibold text-gray-900 mb-6">Revenue Projection</h3>
-            <ResponsiveContainer width="100%" height={250}>
-              <LineChart data={forecastData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="month" />
-                <YAxis />
-                <Tooltip formatter={(value) => [`$${value}`, 'Revenue']} />
-                <Legend />
-                <Line 
-                  type="monotone" 
-                  dataKey="revenue" 
-                  stroke="#3b82f6" 
-                  strokeWidth={2}
-                  name="Revenue"
-                  dot={{ fill: '#3b82f6', strokeWidth: 2 }}
+        <ResponsiveContainer width="100%" height={350}>
+          <BarChart data={tvProductsData} margin={{ top: 20, right: 30, left: 20, bottom: 60 }}>
+            <CartesianGrid strokeDasharray="3 3" stroke="#2c2f38" />
+            <XAxis 
+              dataKey="brand" 
+              angle={-45} 
+              textAnchor="end" 
+              height={80} 
+              tick={{ fill: "#facc15", fontSize: 12 }} 
+            />
+            <YAxis 
+              tickFormatter={(value) => `₹${(value / 1000).toFixed(0)}K`}
+              tick={{ fill: "#facc15", fontSize: 12 }}
+            />
+            <Tooltip content={<CustomTooltip />} />
+            <Bar dataKey="current_price" radius={[4, 4, 0, 0]} name="Current Price">
+              {tvProductsData.map((entry, index) => (
+                <Cell 
+                  key={`cell-${index}`} 
+                  fill={entry.isOurProduct ? "#facc15" : "#ef4444"} 
                 />
-              </LineChart>
-            </ResponsiveContainer>
-          </div> */}
-        </div>
+              ))}
+            </Bar>
+          </BarChart>
+        </ResponsiveContainer>
 
-        {/* Action Items */}
-        <div className="p-6 bg-gray-800 border border-gray-700 rounded-lg shadow-sm">
-          <h3 className="text-lg font-semibold mb-6">Recommended Actions</h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-              <div className="flex items-center mb-3">
-                <LifebuoyIcon />
-                <h4 className="font-medium text-blue-900 ml-2">Price Optimization</h4>
-              </div>
-              <p className="text-sm text-blue-800">Consider increasing price by 8-12% based on competitive analysis.</p>
+        <div className="mt-4 p-4 bg-[#1e222d] border border-yellow-500 rounded-lg">
+          <div className="flex items-center gap-2 mb-2 text-yellow-300">
+            <ArrowTrendingUpIcon />
+            <h4 className="font-medium">Market Position Analysis</h4>
+          </div>
+          <p className="text-sm text-yellow-100">
+            Our Thomson 32&quot; Smart TV is competitively priced at ₹8,999 with the best value proposition in the market. 
+            Consider the consistent pricing strategy (lowest = highest = ₹6,999) for better market penetration.
+          </p>
+        </div>
+      </div>
+
+      {/* Competitor Cards */}
+      <div className="p-4 sm:p-6 border border-[#2c2f38] bg-gradient-to-b from-[#0b0c10] via-[#111217] to-[#1a1a1a] rounded-lg shadow-xl">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-2">
+          <h3 className="text-lg font-semibold text-yellow-400">Competitive Products</h3>
+          <span className="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm border border-yellow-200">
+            {competitiveProducts.length} Competitors Found
+          </span>
+        </div>
+        <div className="space-y-4">
+          {competitiveProducts.map((product) => (
+<div
+  key={product.id}
+  className="border border-gray-700 bg-[#0f1117] rounded-lg p-4 hover:bg-[#1a1d27] hover:border-amber-500 transition-all duration-300 hover:shadow-[0_0_10px_#f59e0b50]"
+>
+  <div className="flex flex-col md:flex-row items-start justify-between gap-4">
+    {/* Left Section */}
+    <div className="flex-1">
+      <h4 className="font-medium text-yellow-200">{product.name}</h4>
+      <p className="text-sm text-gray-400">{product.brand}</p>
+      <div className="flex items-center mt-2 text-sm text-yellow-300">
+        <span>⭐ {product.rating} ({product.reviews} reviews)</span>
+      </div>
+    </div>
+
+    {/* Right Section */}
+    <div className="text-left md:text-right">
+      <div className="flex flex-wrap md:flex-nowrap items-center gap-2 mb-2">
+        <span className="text-lg font-bold text-yellow-300">
+          ₹{product.price}
+        </span>
+        <span
+          className={`px-2 py-1 rounded-full text-xs font-medium ${getPositionBadge(product.marketPosition)}`}
+        >
+          {product.marketPosition}
+        </span>
+      </div>
+      <p className="text-sm text-gray-400">
+        Your price: <span className="text-yellow-200">₹{product.yourPrice}</span>
+      </p>
+    </div>
+  </div>
+</div>
+
+          ))}
+        </div>
+      </div>
+
+      {/* Action Cards */}
+      <div className="p-4 sm:p-6 bg-gradient-to-b from-[#0b0c10] via-[#111217] to-[#1a1a1a] border border-[#2c2f38] rounded-lg shadow-xl">
+        <h3 className="text-lg font-semibold text-yellow-400 mb-6">Recommended Actions</h3>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+          <div className="bg-[#1e2a3a] border border-blue-500 rounded-lg p-4">
+            <div className="flex items-center mb-3 text-blue-300">
+              <LifebuoyIcon />
+              <h4 className="font-medium ml-2">Price Optimization</h4>
             </div>
-            <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-              <div className="flex items-center mb-3">
-                <ChartBarIcon />
-                <h4 className="font-medium text-green-900 ml-2">Inventory Planning</h4>
-              </div>
-              <p className="text-sm text-green-800">Stock up for Q3 - forecast shows 35% increase in demand.</p>
+            <p className="text-sm text-blue-200">Consider increasing price by 8-12% based on competitive analysis.</p>
+          </div>
+          <div className="bg-[#1c2f29] border border-green-500 rounded-lg p-4">
+            <div className="flex items-center mb-3 text-green-300">
+              <ChartBarIcon />
+              <h4 className="font-medium ml-2">Inventory Planning</h4>
             </div>
-            <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
-              <div className="flex items-center mb-3">
-                <ShoppingBagIcon />
-                <h4 className="font-medium text-purple-900 ml-2">Marketing Focus</h4>
-              </div>
-              <p className="text-sm text-purple-800">Target premium segment - 22% growth opportunity identified.</p>
+            <p className="text-sm text-green-200">Stock up for Q3 - forecast shows 35% increase in demand.</p>
+          </div>
+          <div className="bg-[#2a1e3a] border border-purple-500 rounded-lg p-4">
+            <div className="flex items-center mb-3 text-purple-300">
+              <ShoppingBagIcon />
+              <h4 className="font-medium ml-2">Marketing Focus</h4>
             </div>
+            <p className="text-sm text-purple-200">Target premium segment - 22% growth opportunity identified.</p>
           </div>
         </div>
       </div>
+
     </div>
-  );
+  </div>
+);
+
+
 };
 
 export default AnalyticsDashboard;

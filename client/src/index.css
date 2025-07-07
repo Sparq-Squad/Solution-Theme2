@@ -16,4 +16,34 @@
  }
 
 
- 
+
+.custom-select option {
+  background-color: #0f1117;
+  color: #facc15; /* golden yellow */
+  padding: 8px;
+}
+
+
+.custom-select option:checked,
+.custom-select option:focus,
+.custom-select option:hover {
+  background-color: #facc15;
+  color: #000;
+}
+
+@layer utilities {
+  .animate-fade-in {
+    animation: fadeIn 0.8s ease-out both;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
