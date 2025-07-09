@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   BarChart,
   Bar,
@@ -17,7 +16,7 @@ const PriceStrategy = () => {
 
   const myProduct = {
     id: 1,
-    brand: "Smart TV by Sonu Hansda",
+    brand: "Nginx TV",
     current_price: 8499,
     lowest_price: 6999,
     highest_price: 9999,
@@ -54,13 +53,11 @@ const PriceStrategy = () => {
 <div className="p-6 bg-gradient-to-b from-[#0b0c10] via-[#111217] to-[#1a1a1a] text-white min-h-screen">
   <div className="max-w-7xl mx-auto">
 
-    {/* Header */}
     <div className="mb-10 text-center">
       <h1 className="text-4xl font-bold text-yellow-400">Pricing Strategy Dashboard</h1>
       <p className="text-gray-400 mt-2 text-lg">Strategic insights and competitive positioning for business growth.</p>
     </div>
-
-    {/* Section Template */}
+ 
     <section className="bg-gradient-to-b from-[#0b0c10] via-[#111217] to-[#1a1a1a] p-6 rounded-xl border border-[#2c2f38] shadow-lg mb-8 hover:shadow-yellow-900/30 transition duration-300">
 
       <h2 className="text-xl font-semibold text-yellow-300 mb-4 border-b border-gray-600 pb-2">Current Market Prices</h2>
@@ -85,7 +82,6 @@ const PriceStrategy = () => {
       </div>
     </section>
 
-    {/* Historical Price Ranges */}
     <section className="bg-gradient-to-b from-[#0b0c10] via-[#111217] to-[#1a1a1a] p-6 rounded-xl border border-[#2c2f38] shadow-lg mb-8 hover:shadow-yellow-900/30 transition duration-300">
       <h2 className="text-xl font-semibold text-yellow-300 mb-4 border-b border-gray-600 pb-2">Historical Price Ranges</h2>
       <div className="h-72">
@@ -103,7 +99,6 @@ const PriceStrategy = () => {
       </div>
     </section>
 
-    {/* Feature Table */}
     <section className="bg-gradient-to-b from-[#0b0c10] via-[#111217] to-[#1a1a1a] p-6 rounded-xl border border-[#2c2f38] shadow-lg mb-8 hover:shadow-yellow-900/30 transition duration-300">
       <h2 className="text-xl font-semibold text-yellow-300 mb-4 border-b border-gray-600 pb-2">Feature Comparison</h2>
       <div className="overflow-x-auto">
@@ -135,7 +130,6 @@ const PriceStrategy = () => {
       </div>
     </section>
 
-    {/* Strategic Insights */}
     <section className="bg-gradient-to-b from-[#0b0c10] via-[#111217] to-[#1a1a1a] p-6 rounded-xl border border-[#2c2f38] shadow-lg mb-8 hover:shadow-yellow-900/30 transition duration-300">
       <h2 className="text-xl font-semibold text-yellow-300 mb-4 border-b border-gray-600 pb-2">Strategic Insights</h2>
       <ul className="space-y-3 text-yellow-100 list-disc pl-5 text-sm sm:text-base leading-relaxed">
@@ -147,7 +141,6 @@ const PriceStrategy = () => {
       </ul>
     </section>
 
-    {/* Recommendations */}
     <section className="bg-gradient-to-b from-[#0b0c10] via-[#111217] to-[#1a1a1a] p-6 rounded-xl border border-[#2c2f38] shadow-lg mb-8 hover:shadow-yellow-900/30 transition duration-300">
       <h2 className="text-xl font-semibold text-yellow-300 mb-4 border-b border-gray-600 pb-2">Recommended Strategy</h2>
       <ul className="space-y-3 text-yellow-100 list-disc pl-5 text-sm sm:text-base leading-relaxed">
@@ -158,7 +151,6 @@ const PriceStrategy = () => {
       </ul>
     </section>
 
-    {/* Summary */}
     <section className="bg-gradient-to-b from-[#0b0c10] via-[#111217] to-[#1a1a1a] p-6 rounded-xl border border-[#2c2f38] shadow-lg mb-8 hover:shadow-yellow-900/30 transition duration-300">
       <h2 className="text-xl font-semibold text-yellow-300 mb-4 border-b border-gray-600 pb-2">Summary</h2>
       <p className="text-yellow-100 mb-3">Your Smart TV sits well in the mid-market with scope to:</p>
