@@ -1,566 +1,173 @@
-import React, { useState } from "react";
+import React from 'react';
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell
+} from 'recharts';
 
-const tabs = [
-  { id: "overview", label: "Overview" },
-  { id: "campaigns", label: "Campaigns" },
-  { id: "audience", label: "Audience" },
-  { id: "content", label: "Content" },
-  { id: "brand", label: "Brand Health" },
-];
+const MarketingBranding = () => {
 
-const campaignPerformance = [
-  {
-    platform: "Google Ads",
-    impressions: 840000,
-    clicks: 50000,
-    ctr: 5.95,
-    cost: 1200,
-    conversions: 640,
-  },
-  {
-    platform: "Facebook",
-    impressions: 620000,
-    clicks: 38000,
-    ctr: 6.12,
-    cost: 950,
-    conversions: 510,
-  },
-  {
-    platform: "Instagram",
-    impressions: 540000,
-    clicks: 32000,
-    ctr: 5.92,
-    cost: 870,
-    conversions: 480,
-  },
-  {
-    platform: "Twitter",
-    impressions: 420000,
-    clicks: 28000,
-    ctr: 6.66,
-    cost: 640,
-    conversions: 420,
-  },
-];
+  const myProduct = {
+    id: 1,
+    brand: "Nginx TV",
+    current_price: 8499,
+    lowest_price: 6999,
+    highest_price: 9999,
+    hdmi_ports: 1,
+    usb_ports: 2,
+    os: "Linux",
+  };
 
-const audienceSegments = [
-  {
-    name: "Tech Enthusiasts",
-    size: 30,
-    engagement: "Very High",
-    color: "#FFD700",
-  },
-  { name: "College Students", size: 25, engagement: "High", color: "#FACC15" },
-  { name: "Parents", size: 20, engagement: "Medium", color: "#A3A3A3" },
-  { name: "Professionals", size: 15, engagement: "High", color: "#FBBF24" },
-  { name: "Others", size: 10, engagement: "Low", color: "#737373" },
-];
+  const tvProductsData = [
+    { id: 2, brand: "Foxsky", current_price: 7999, lowest_price: 6999, highest_price: 9000, hdmi_ports: 2, usb_ports: 2, os: "Android" },
+    { id: 3, brand: "Infinix", current_price: 8999, lowest_price: 7499, highest_price: 8500, hdmi_ports: 2, usb_ports: 2, os: "Linux" },
+    { id: 4, brand: "Thomson", current_price: 8999, lowest_price: 6999, highest_price: 6999, hdmi_ports: 2, usb_ports: 2, os: "Linux" },
+    { id: 5, brand: "iFFALCON by TCL", current_price: 8999, lowest_price: 8999, highest_price: 9499, hdmi_ports: 2, usb_ports: 1, os: "Android" },
+    { id: 6, brand: "MarQ by Flipkart", current_price: 7799, lowest_price: 6499, highest_price: 7879, hdmi_ports: 2, usb_ports: 1, os: "Coolita" },
+  ];
 
-const contentPerformance = [
-  {
-    type: "Video Ad",
-    views: 182400,
-    engagement: 7.8,
-    shares: 350,
-    likes: 1450,
-  },
-  { type: "Blog Post", views: 76300, engagement: 5.2, shares: 170, likes: 610 },
-  {
-    type: "Product Review",
-    views: 53400,
-    engagement: 6.1,
-    shares: 190,
-    likes: 720,
-  },
-];
+  const allProducts = [myProduct, ...tvProductsData];
 
-const brandMetrics = [
-  { metric: "Brand Awareness", value: 72, target: 65, color: "#FFD700" },
-  { metric: "Brand Loyalty", value: 78, target: 75, color: "#FACC15" },
-  { metric: "Net Promoter Score", value: 60, target: 70, color: "#FBBF24" },
-  { metric: "Brand Sentiment", value: 8.1, target: 8.0, color: "#EAB308" },
-];
+  // OS Distribution
+  const osCount = allProducts.reduce((acc, item) => {
+    acc[item.os] = (acc[item.os] || 0) + 1;
+    return acc;
+  }, {});
 
-export default function MarketingBranding() {
-  const [activeTab, setActiveTab] = useState("overview");
-  const [campaignBudget, setCampaignBudget] = useState("");
+  const osChartData = Object.entries(osCount).map(([os, count]) => ({ name: os, value: count }));
+
+  // HDMI vs USB Ports
+  const portComparison = allProducts.map((item) => ({
+    brand: item.brand,
+    hdmi: item.hdmi_ports,
+    usb: item.usb_ports
+  }));
+
+  const COLORS = ['#facc15', '#10B981', '#EF4444', '#3B82F6', '#8B5CF6'];
 
   return (
-    <div className="p-6 sm:p-8  bg-gradient-to-b from-[#0b0c10] via-[#111217] to-[#1a1a1a] min-h-screen text-yellow-400">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-yellow-400 mb-2">
-          Marketing & Branding
-        </h1>
-        <p className="text-gray-400">
-          Optimize your brand presence and marketing campaigns
-        </p>
-      </div>
+    <div className="p-6 bg-gradient-to-b from-[#0b0c10] via-[#111217] to-[#1a1a1a] text-white min-h-screen">
+      <div className="max-w-7xl mx-auto">
 
-      {/* Tabs */}
-      <div className="flex space-x-4 mb-6 border-b border-gray-700">
-        {tabs.map((tab) => (
-          <button
-            key={tab.id}
-            className={`px-4 py-2 text-sm font-medium transition-colors duration-300 ${
-              activeTab === tab.id
-                ? "text-yellow-400 border-b-2 border-yellow-400"
-                : "text-gray-400 hover:text-yellow-300"
-            }`}
-            onClick={() => setActiveTab(tab.id)}
-          >
-            {tab.label}
-          </button>
-        ))}
-      </div>
+        <div className="mb-10 text-center">
+          <h1 className="text-4xl font-bold text-yellow-400">Marketing & Branding Strategy</h1>
+          <p className="text-gray-400 mt-2 text-lg">Position your product in the market with strong branding and unique selling points.</p>
+        </div>
 
-      {/* Tab Content */}
-      <div className="space-y-6">
-        {/* OVERVIEW TAB */}
-        {activeTab === "overview" && (
-          <>
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-              {[
-                {
-                  label: "Total Reach",
-                  value: "2.4M",
-                  trend: "+12% this month",
-                  icon: "👁️",
-                },
-                {
-                  label: "Engagement Rate",
-                  value: "7.3%",
-                  trend: "+0.8% this month",
-                  icon: "❤️",
-                },
-                {
-                  label: "Campaign ROI",
-                  value: "3.2x",
-                  trend: "Above target",
-                  icon: "🎯",
-                },
-                {
-                  label: "Brand Mentions",
-                  value: "1,847",
-                  trend: "+18% this week",
-                  icon: "💬",
-                },
-              ].map((item, index) => (
-                <div
-                  key={index}
-                  className="bg-[#131417] rounded-xl border border-[#2e2e2e] shadow-md p-6 transition-all duration-300 hover:border-amber-500 hover:shadow-[0_0_10px_#f59e0b50]"
+        {/* Section: OS Market Share */}
+        <section className="bg-gradient-to-b from-[#0b0c10] via-[#111217] to-[#1a1a1a] p-6 rounded-xl border border-[#2c2f38] shadow-lg mb-8 hover:shadow-yellow-900/30 transition duration-300">
+          <h2 className="text-xl font-semibold text-yellow-300 mb-4 border-b border-gray-600 pb-2">Operating System Adoption</h2>
+          <div className="h-72">
+            <ResponsiveContainer width="100%" height="100%">
+              <PieChart>
+                <Pie
+                  data={osChartData}
+                  cx="50%"
+                  cy="50%"
+                  labelLine={false}
+                  outerRadius={80}
+                  fill="#8884d8"
+                  dataKey="value"
+                  label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
                 >
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm text-gray-400 mb-1">{item.label}</p>
-                      <p className="text-2xl font-bold text-amber-400">
-                        {item.value}
-                      </p>
-                      <div className="text-sm text-green-400 mt-1">
-                        {item.trend}
-                      </div>
-                    </div>
-                    <div className="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center text-amber-600 shadow-inner">
-                      {item.icon}
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <div className="bg-gradient-to-b from-[#0b0c10] via-[#111217] to-[#1a1a1a] rounded-xl border border-[#2c2f36] shadow-lg">
-              <div className="px-6 py-4 border-b border-[#2c2f36]">
-                <h2 className="text-lg font-semibold text-amber-400 tracking-wide">
-                  Marketing Performance Trends
-                </h2>
-              </div>
-              <div className="p-6">
-                <div className="h-64 flex items-center justify-center bg-[#1a1c23] rounded-lg border border-[#2f323a]">
-                  <div className="text-center text-gray-400">
-                    <p className="mb-4">Performance Trends Visualization</p>
-                    <div className="inline-block w-64 h-32 border-2 border-dashed border-gray-600 rounded-xl bg-[#131417]" />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </>
-        )}
-
-        {/* CAMPAIGNS TAB */}
-        {activeTab === "campaigns" && (
-          <>
-            <div className="bg-gradient-to-b from-[#0b0c10] via-[#111217] to-[#1a1a1a] rounded-lg border border-gray-700 shadow">
-              <div className="px-6 py-4 border-b border-gray-700">
-                <h2 className="text-lg font-semibold text-yellow-400">
-                  Create New Campaign
-                </h2>
-              </div>
-              <div className="p-6 space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label
-                      htmlFor="campaign-name"
-                      className="block text-sm font-medium text-gray-400 mb-1"
-                    >
-                      Campaign Name
-                    </label>
-                    <input
-                      id="campaign-name"
-                      type="text"
-                      placeholder="Summer Headphones Promo"
-                      className="w-full px-3 py-2 bg-[#161a23] text-yellow-300 border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-yellow-500 focus:border-yellow-500"
-                    />
-                  </div>
-                  <div>
-                    <label
-                      htmlFor="campaign-budget"
-                      className="block text-sm font-medium text-gray-400 mb-1"
-                    >
-                      Budget ($)
-                    </label>
-                    <input
-                      id="campaign-budget"
-                      type="number"
-                      value={campaignBudget}
-                      onChange={(e) => setCampaignBudget(e.target.value)}
-                      placeholder="1000"
-                      className="w-full px-3 py-2 bg-[#161a23] text-yellow-300 border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-yellow-500 focus:border-yellow-500"
-                    />
-                  </div>
-                </div>
-                <div>
-                  <label
-                    htmlFor="campaign-description"
-                    className="block text-sm font-medium text-gray-400 mb-1"
-                  >
-                    Campaign Description
-                  </label>
-                  <textarea
-                    id="campaign-description"
-                    placeholder="Describe your campaign objectives..."
-                    className="w-full px-3 py-2 bg-[#161a23] text-yellow-300 border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-yellow-500 focus:border-yellow-500"
-                    rows={3}
-                  />
-                </div>
-                <button className="w-full px-4 py-2 bg-yellow-500 text-black font-semibold rounded-md hover:bg-yellow-600 transition-colors">
-                  Create Campaign
-                </button>
-              </div>
-            </div>
-
-            {/* Platform Performance */}
-            <div className="bg-gradient-to-b from-[#0b0c10] via-[#111217] to-[#1a1a1a] rounded-lg border border-gray-700 shadow">
-              <div className="px-6 py-4 border-b border-gray-700">
-                <h2 className="text-lg font-semibold text-yellow-400">
-                  Campaign Performance by Platform
-                </h2>
-              </div>
-              <div className="p-6 space-y-4">
-                {campaignPerformance.map((platform, index) => (
-<div
-  key={index}
-  className="flex flex-col sm:flex-row justify-between p-4 bg-[#161a23] rounded-lg text-yellow-300 border border-gray-700 transition-all duration-300 hover:border-amber-500 hover:shadow-[0_0_10px_#f59e0b50]"
->
-  <div className="flex items-center space-x-3">
-    <div className="w-8 h-8 bg-yellow-400 text-black rounded flex items-center justify-center text-xs font-bold shadow-sm">
-      {platform.platform[0]}
-    </div>
-    <span className="font-semibold text-amber-400">{platform.platform}</span>
-  </div>
-
-  <div className="grid grid-cols-2 sm:grid-cols-5 gap-4 mt-3 sm:mt-0 text-sm text-yellow-100">
-    <div>
-      <p className="text-gray-400">Impressions</p>
-      <p>{platform.impressions.toLocaleString()}</p>
-    </div>
-    <div>
-      <p className="text-gray-400">Clicks</p>
-      <p>{platform.clicks.toLocaleString()}</p>
-    </div>
-    <div>
-      <p className="text-gray-400">CTR</p>
-      <p>{platform.ctr}%</p>
-    </div>
-    <div>
-      <p className="text-gray-400">Cost</p>
-      <p>${platform.cost}</p>
-    </div>
-    <div>
-      <p className="text-gray-400">Conversions</p>
-      <p className="text-green-400">{platform.conversions}</p>
-    </div>
-  </div>
-</div>
-
-                ))}
-              </div>
-            </div>
-          </>
-        )}
-        {/* AUDIENCE TAB */}
-        {activeTab === "audience" && (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {/* Audience Segments */}
-            <div className="bg-gradient-to-b from-[#0b0c10] via-[#111217] to-[#1a1a1a] rounded-lg border border-gray-700 shadow">
-              <div className="px-6 py-4 border-b border-gray-700">
-                <h2 className="text-lg font-semibold text-yellow-400">
-                  Audience Segments
-                </h2>
-              </div>
-              <div className="p-6">
-                <div className="h-64 flex items-center justify-center bg-[#161a23] rounded-lg text-gray-400">
-                  Audience Segments Visualization
-                </div>
-                <div className="space-y-3 mt-4">
-                  {audienceSegments.map((segment, index) => (
-                    <div
-                      key={index}
-                      className="flex items-center justify-between"
-                    >
-                      <div className="flex items-center">
-                        <div
-                          className="w-3 h-3 rounded-full mr-2"
-                          style={{ backgroundColor: segment.color }}
-                        />
-                        <span className="text-sm font-medium text-yellow-300">
-                          {segment.name}
-                        </span>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <span className="text-sm text-gray-400">
-                          {segment.size}%
-                        </span>
-                        <span
-                          className={`px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                            segment.engagement === "Very High"
-                              ? "bg-green-200 text-green-900"
-                              : segment.engagement === "High"
-                              ? "bg-blue-200 text-blue-900"
-                              : "bg-gray-300 text-gray-900"
-                          }`}
-                        >
-                          {segment.engagement}
-                        </span>
-                      </div>
-                    </div>
+                  {osChartData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                   ))}
-                </div>
-              </div>
-            </div>
-
-            {/* Demographics */}
-            <div className="bg-gradient-to-b from-[#0b0c10] via-[#111217] to-[#1a1a1a] rounded-lg border border-gray-700 shadow">
-              <div className="px-6 py-4 border-b border-gray-700">
-                <h2 className="text-lg font-semibold text-yellow-400">
-                  Audience Demographics
-                </h2>
-              </div>
-              <div className="p-6 space-y-6">
-                {/* Age Groups */}
-                <div>
-                  <h4 className="font-medium text-yellow-300 mb-3">
-                    Age Groups
-                  </h4>
-                  <div className="space-y-2">
-                    {[
-                      { range: "18-24", percentage: 22 },
-                      { range: "25-34", percentage: 35 },
-                      { range: "35-44", percentage: 28 },
-                      { range: "45-54", percentage: 12 },
-                      { range: "55+", percentage: 3 },
-                    ].map((age, index) => (
-                      <div
-                        key={index}
-                        className="flex items-center justify-between"
-                      >
-                        <span className="text-sm text-gray-300">
-                          {age.range}
-                        </span>
-                        <div className="flex items-center space-x-2 w-3/4">
-                          <div className="w-full bg-gray-600 rounded-full h-2">
-                            <div
-                              className="bg-yellow-400 h-2 rounded-full"
-                              style={{ width: `${age.percentage}%` }}
-                            />
-                          </div>
-                          <span className="text-sm font-medium text-yellow-300">
-                            {age.percentage}%
-                          </span>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Top Locations */}
-                <div>
-                  <h4 className="font-medium text-yellow-300 mb-3">
-                    Top Locations
-                  </h4>
-                  <div className="space-y-2">
-                    {[
-                      { city: "New York", percentage: 18 },
-                      { city: "Los Angeles", percentage: 15 },
-                      { city: "Chicago", percentage: 12 },
-                      { city: "Houston", percentage: 10 },
-                      { city: "Phoenix", percentage: 8 },
-                    ].map((location, index) => (
-                      <div
-                        key={index}
-                        className="flex items-center justify-between"
-                      >
-                        <span className="text-sm text-gray-300">
-                          {location.city}
-                        </span>
-                        <span className="text-sm font-medium text-yellow-300">
-                          {location.percentage}%
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
+                </Pie>
+                <Tooltip contentStyle={{ backgroundColor: '#1f2937', borderColor: '#2c2f38' }} />
+                <Legend wrapperStyle={{ color: '#facc15' }} />
+              </PieChart>
+            </ResponsiveContainer>
           </div>
-        )}
+          <p className="mt-4 text-sm text-yellow-100">
+            Your Linux OS is shared by Infinix and Thomson. This gives you an opportunity to position it as secure, stable, and lightweight compared to Android-based competitors.
+          </p>
+        </section>
 
-        {/* CONTENT TAB */}
-        {activeTab === "content" && (
-          <div className="bg-gradient-to-b from-[#0b0c10] via-[#111217] to-[#1a1a1a] rounded-lg border border-gray-700 shadow">
-            <div className="px-6 py-4 border-b border-gray-700">
-              <h2 className="text-lg font-semibold text-yellow-400">
-                Content Performance
-              </h2>
-            </div>
-            <div className="p-6 space-y-4">
-              {contentPerformance.map((content, index) => (
-<div
-  key={index}
-  className="flex items-center justify-between p-4 rounded-lg  text-yellow-300 border bg-gradient-to-b from-[#0b0c10] via-[#111217] to-[#1a1a1a] border-gray-700 transition-all duration-300 hover:border-amber-500 hover:shadow-[0_0_10px_#f59e0b50]"
->
-  <div>
-    <h3 className="font-semibold text-amber-400">{content.type}</h3>
-    <p className="text-sm text-gray-400">
-      {content.views.toLocaleString()} views
-    </p>
-  </div>
-  
-  <div className="grid grid-cols-3 gap-8 text-center">
-    <div>
-      <p className="text-sm text-gray-400">Engagement</p>
-      <p className="font-semibold text-yellow-100">{content.engagement}%</p>
-    </div>
-    <div>
-      <p className="text-sm text-gray-400">Shares</p>
-      <p className="font-semibold text-yellow-100">{content.shares}</p>
-    </div>
-    <div>
-      <p className="text-sm text-gray-400">Likes</p>
-      <p className="font-semibold text-yellow-100">{content.likes}</p>
-    </div>
-  </div>
-</div>
-
-              ))}
-            </div>
+        {/* Section: Port Comparison */}
+        <section className="bg-gradient-to-b from-[#0b0c10] via-[#111217] to-[#1a1a1a] p-6 rounded-xl border border-[#2c2f38] shadow-lg mb-8 hover:shadow-yellow-900/30 transition duration-300">
+          <h2 className="text-xl font-semibold text-yellow-300 mb-4 border-b border-gray-600 pb-2">Port Comparison</h2>
+          <div className="h-72">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={portComparison}>
+                <CartesianGrid stroke="#2c2f38" strokeDasharray="5 5" />
+                <XAxis dataKey="brand" tick={{ fontSize: 12, fill: '#facc15' }} />
+                <YAxis tick={{ fill: '#facc15' }} />
+                <Tooltip contentStyle={{ backgroundColor: '#1f2937', borderColor: '#2c2f38' }} />
+                <Legend wrapperStyle={{ color: '#facc15' }} />
+                <Bar dataKey="hdmi" name="HDMI Ports" stackId="a" fill="#3B82F6" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="usb" name="USB Ports" stackId="a" fill="#10B981" radius={[4, 4, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
           </div>
-        )}
+          <p className="mt-4 text-sm text-yellow-100">
+            You offer more USB ports than most but fewer HDMI ports. Consider emphasizing versatility in connectivity (e.g., smart home compatibility or media hubs).
+          </p>
+        </section>
 
-        {/* BRAND HEALTH TAB */}
-        {activeTab === "brand" && (
-          <>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {brandMetrics.map((metric, index) => (
-<div
-  key={index}
-  className="bg-[#131417] rounded-xl border border-[#2e2e2e] shadow-md transition-all duration-300 hover:border-amber-500 hover:shadow-[0_0_10px_#f59e0b50]"
->
-  <div className="p-6 space-y-3">
-    <h3 className="font-semibold text-amber-400">{metric.metric}</h3>
-    <div className="space-y-2">
-      <div className="flex items-center justify-between">
-        <span
-          className="text-2xl font-bold"
-          style={{ color: metric.color }}
-        >
-          {metric.metric === "Brand Sentiment"
-            ? metric.value
-            : `${metric.value}%`}
-        </span>
-        <span
-          className={`px-2.5 py-0.5 rounded-full text-xs font-semibold transition-colors ${
-            metric.value >= metric.target
-              ? "bg-green-200 text-green-900"
-              : "bg-yellow-200 text-yellow-900"
-          }`}
-        >
-          {metric.value >= metric.target ? "On Track" : "Below Target"}
-        </span>
-      </div>
+        {/* Section: Brand Differentiation Table */}
+        <section className="bg-gradient-to-b from-[#0b0c10] via-[#111217] to-[#1a1a1a] p-6 rounded-xl border border-[#2c2f38] shadow-lg mb-8 hover:shadow-yellow-900/30 transition duration-300">
+          <h2 className="text-xl font-semibold text-yellow-300 mb-4 border-b border-gray-600 pb-2">Brand Differentiation</h2>
+          <div className="overflow-x-auto">
+            <table className="min-w-full border-collapse text-sm">
+              <thead className="bg-[#23272F] text-yellow-200">
+                <tr>
+                  <th className="px-4 py-3 text-left">Brand</th>
+                  <th className="px-4 py-3 text-left">OS</th>
+                  <th className="px-4 py-3 text-left">Unique Value Proposition</th>
+                </tr>
+              </thead>
+              <tbody>
+                {allProducts.map((item, index) => (
+                  <tr key={index} className="border-b border-[#2c2f38] hover:bg-[#1e222d] transition">
+                    <td className="px-4 py-3 text-yellow-100">{item.brand}</td>
+                    <td className="px-4 py-3">{item.os}</td>
+                    <td className="px-4 py-3 text-yellow-200">
+                      {item.os === "Linux" && "Secure, lightweight, long-term support"}
+                      {item.os === "Android" && "Smart features, app ecosystem"}
+                      {item.os === "Coolita" && "User-friendly interface"}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
 
-      {/* Progress Bar */}
-      <div className="w-full bg-gray-700 rounded-full h-2 overflow-hidden">
-        <div
-          className="h-2 rounded-full transition-all duration-300"
-          style={{
-            backgroundColor: metric.color,
-            width: `${(metric.value / metric.target) * 100}%`,
-          }}
-        />
-      </div>
+        {/* Section: Branding Strategy Insights */}
+        <section className="bg-gradient-to-b from-[#0b0c10] via-[#111217] to-[#1a1a1a] p-6 rounded-xl border border-[#2c2f38] shadow-lg mb-8 hover:shadow-yellow-900/30 transition duration-300">
+          <h2 className="text-xl font-semibold text-yellow-300 mb-4 border-b border-gray-600 pb-2">Strategic Branding Insights</h2>
+          <ul className="space-y-3 text-yellow-100 list-disc pl-5 text-sm sm:text-base leading-relaxed">
+            <li><strong className="text-yellow-400">Emphasize Security:</strong> Market Linux as safe and reliable for family use.</li>
+            <li><strong className="text-yellow-400">Bundle with Ecosystem:</strong> Offer combo deals with streaming sticks or soundbars.</li>
+            <li><strong className="text-yellow-400">Content Partnerships:</strong> Tie up with OTT platforms to highlight pre-installed apps.</li>
+            <li><strong className="text-yellow-400">Eco-Friendly Messaging:</strong> Promote energy efficiency and long lifespan.</li>
+            <li><strong className="text-yellow-400">Social Proof:</strong> Leverage customer reviews for credibility.</li>
+          </ul>
+        </section>
 
-      {/* Target Label */}
-      <p className="text-xs text-gray-400">
-        Target:{" "}
-        {metric.metric === "Brand Sentiment"
-          ? metric.target
-          : `${metric.target}%`}
-      </p>
-    </div>
-  </div>
-</div>
+        {/* Section: Summary */}
+        <section className="bg-gradient-to-b from-[#0b0c10] via-[#111217] to-[#1a1a1a] p-6 rounded-xl border border-[#2c2f38] shadow-lg mb-8 hover:shadow-yellow-900/30 transition duration-300">
+          <h2 className="text-xl font-semibold text-yellow-300 mb-4 border-b border-gray-600 pb-2">Summary</h2>
+          <p className="text-yellow-100 mb-3">Your Smart TV has a strong base to build a compelling brand story around security, performance, and affordability.</p>
+          <ul className="space-y-2 text-yellow-100 list-disc pl-5 text-sm sm:text-base">
+            <li><strong className="text-yellow-400">Differentiate via OS:</strong> Use Linux as a USP over Android.</li>
+            <li><strong className="text-yellow-400">Optimize for tech-savvy users:</strong> Highlight port flexibility and customization.</li>
+            <li><strong className="text-yellow-400">Leverage partnerships:</strong> Boost visibility through content integrations.</li>
+          </ul>
+        </section>
 
-              ))}
-            </div>
-
-            {/* Brand Health Score */}
-            <div className="bg-gradient-to-b from-[#0b0c10] via-[#111217] to-[#1a1a1a] rounded-lg border border-gray-700 shadow mt-6">
-              <div className="px-6 py-4 border-b border-gray-700">
-                <h2 className="text-lg font-semibold text-yellow-400">
-                  Overall Brand Health Score
-                </h2>
-              </div>
-              <div className="p-6 text-center space-y-4 text-yellow-300">
-                <div className="inline-flex items-center justify-center w-32 h-32 rounded-full bg-green-100 mx-auto">
-                  <span className="text-4xl font-bold text-green-600">8.3</span>
-                </div>
-                <div>
-                  <p className="text-lg font-medium">Excellent Brand Health</p>
-                  <p className="text-gray-400">
-                    Your brand is performing well across all key metrics
-                  </p>
-                </div>
-                <div className="flex justify-center space-x-8 text-sm">
-                  <div className="text-center">
-                    <span className="text-yellow-500 text-xl mb-1">★</span>
-                    <p className="font-medium">4.2/5</p>
-                    <p className="text-gray-400">Customer Rating</p>
-                  </div>
-                  <div className="text-center">
-                    <span className="text-blue-400 text-xl mb-1">↗️</span>
-                    <p className="font-medium">67%</p>
-                    <p className="text-gray-400">Share of Voice</p>
-                  </div>
-                  <div className="text-center">
-                    <span className="text-purple-400 text-xl mb-1">👥</span>
-                    <p className="font-medium">78%</p>
-                    <p className="text-gray-400">Loyalty Rate</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </>
-        )}
       </div>
     </div>
   );
-}
+};
+
+export default MarketingBranding;
