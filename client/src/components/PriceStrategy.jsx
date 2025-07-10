@@ -25,13 +25,15 @@ const PriceStrategy = () => {
     brand: "Nginx TV",
     current_price: 8499,
     lowest_price: 6999,
-    highest_price: 9999,
+    highest_price: 6999,
     hdmi_ports: 1,
     usb_ports: 2,
     os: "Linux", },
-    { id: 5, brand: "iFFALCON by TCL", current_price: 8999, lowest_price: 8999, highest_price: 9499, hdmi_ports: 2, usb_ports: 1, os: "Android" },
+        { id: 5, brand: "iFFALCON by TCL", current_price: 8999, lowest_price: 8999, highest_price: 9499, hdmi_ports: 2, usb_ports: 1, os: "Android" },
     { id: 6, brand: "MarQ by Flipkart", current_price: 7799, lowest_price: 6499, highest_price: 7879, hdmi_ports: 2, usb_ports: 1, os: "Coolita" },
-  ];
+ 
+    ];
+
 
   const allProducts = [myProduct, ...tvProductsData];
 
