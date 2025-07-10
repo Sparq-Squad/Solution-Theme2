@@ -15,23 +15,25 @@ import {
 const PriceStrategy = () => {
 
   const myProduct = {
-    id: 1,
-    brand: "Thompson",
-    current_price: 8999,
-    lowest_price: 6999,
-    highest_price: 6999,
-    hdmi_ports: 1,
-    usb_ports: 2,
-    os: "Linux",
+    id: 4, brand: "Thomson", current_price: 8999, lowest_price: 6999, highest_price: 6999, hdmi_ports: 2, usb_ports: 2, os: "Linux"
   };
 
   const tvProductsData = [
     { id: 2, brand: "Foxsky", current_price: 7999, lowest_price: 6999, highest_price: 9000, hdmi_ports: 2, usb_ports: 2, os: "Android" },
     { id: 3, brand: "Infinix", current_price: 8999, lowest_price: 7499, highest_price: 8500, hdmi_ports: 2, usb_ports: 2, os: "Linux" },
-    { id: 4, brand: "Nginx", current_price: 8999, lowest_price: 6999, highest_price: 6999, hdmi_ports: 2, usb_ports: 2, os: "Linux" },
-    { id: 5, brand: "iFFALCON by TCL", current_price: 8999, lowest_price: 8999, highest_price: 9499, hdmi_ports: 2, usb_ports: 1, os: "Android" },
+    {     id: 1,
+    brand: "Nginx TV",
+    current_price: 8499,
+    lowest_price: 6999,
+    highest_price: 6999,
+    hdmi_ports: 1,
+    usb_ports: 2,
+    os: "Linux", },
+        { id: 5, brand: "iFFALCON by TCL", current_price: 8999, lowest_price: 8999, highest_price: 9499, hdmi_ports: 2, usb_ports: 1, os: "Android" },
     { id: 6, brand: "MarQ by Flipkart", current_price: 7799, lowest_price: 6499, highest_price: 7879, hdmi_ports: 2, usb_ports: 1, os: "Coolita" },
-  ];
+ 
+    ];
+
 
   const allProducts = [myProduct, ...tvProductsData];
 
