@@ -51,9 +51,7 @@ function AppRoutes() {
         <Route
           path="/dashboard"
           element={
-            <ProtectedRoute>
               <Dashboard />
-            </ProtectedRoute>
           }
         >
           <Route index element={<PageWrapper><Overview /></PageWrapper>} />
